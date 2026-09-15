@@ -5,44 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- ЗАГОЛОВОК: главное SEO-поле, до 60 символов, включи ключевой запрос -->
-  <title>Заголовок статьи — Название сайта</title>
+  <title>Заголовок статьи — LUMINO</title>
 
   <!-- ОПИСАНИЕ: 1-2 предложения, до 160 символов, тоже с ключевым запросом -->
   <meta name="description" content="Краткое описание статьи для поисковой выдачи.">
 
   <!-- ССЫЛКА НА ЭТУ ЖЕ СТРАНИЦУ (поменять example.com на реальный домен и путь файла) -->
-  <link rel="canonical" href="https://example.com/articles/ИМЯ-ФАЙЛА.html">
+  <link rel="canonical" href="https://natalydes-cell.github.io/articles/РАЗДЕЛ/ИМЯ-ФАЙЛА.html">
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-  <header id="site-header"></header>
+  <!--
+    Хлебные крошки задаются прямо здесь, для каждой статьи свои — просто пропиши
+    цепочку title/href от главной до этой статьи (последний элемент — сама статья, ссылку "href" у него можно не менять, он не кликается).
+  -->
+  <script>
+    window.PAGE_CRUMBS = [
+      { title: "Главная", href: "/" },
+      { title: "Название раздела", href: "/articles/РАЗДЕЛ/" },
+      { title: "Короткое название статьи", href: "#" }
+    ];
+  </script>
 
-  <main>
-    <div class="container">
-      <h1>Заголовок статьи</h1>
-      <p class="article-meta">Категория: ХХХ &middot; Опубликовано: ДД.ММ.ГГГГ</p>
+  <div class="overlay" id="overlay"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
 
-      <div id="ad-top" class="ad-slot" data-ad-slot></div>
+    <main class="main is-article">
+      <div class="topbar" id="topbar"></div>
+      <div class="crumbs" id="crumbs"></div>
 
-      <div class="article-body">
-        <p>Вступительный абзац статьи. Здесь пишется основной текст, раскрывающий тему.</p>
+      <article class="article">
+        <div class="article-header">
+          <div class="article-eyebrow">Название раздела</div>
+          <h1>Заголовок статьи</h1>
+          <p class="article-meta">Опубликовано: ДД.ММ.ГГГГ</p>
+          <!-- Теги статьи: перечисли через запятую, common.js сам отрисует их чипами -->
+          <div data-tags="тег1, тег2, тег3"></div>
+        </div>
 
-        <h2>Подзаголовок раздела</h2>
-        <p>Текст раздела.</p>
+        <div id="ad-top" data-ad-slot></div>
 
-        <!--
-          Если для этой статьи нужен калькулятор — вставляется отдельный блок
-          с классом "calculator" и своим JS-файлом в /assets/js/calculators/.
-          Пока оставляем пусто.
-        -->
-      </div>
+        <div class="article-body">
+          <p>Вступительный абзац статьи. Здесь пишется основной текст, раскрывающий тему.</p>
 
-      <div id="ad-bottom" class="ad-slot" data-ad-slot></div>
-    </div>
-  </main>
+          <h2>Подзаголовок раздела</h2>
+          <p>Текст раздела.</p>
 
-  <footer id="site-footer"></footer>
+          <!--
+            Если для этой статьи нужен калькулятор — вставляется отдельный блок
+            с классом "calculator" и своим JS-файлом в /assets/js/calculators/.
+            Пока оставляем пусто.
+          -->
+        </div>
+
+        <!-- Если статья опирается на конкретные книги/источники — перечисли их здесь -->
+        <div class="sources">
+          <h3>Источники</h3>
+          <ol>
+            <li>Автор. Название книги.</li>
+          </ol>
+        </div>
+
+        <div id="ad-bottom" data-ad-slot></div>
+      </article>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+    <footer class="footer" id="footer"></footer>
+  </div>
 
   <script src="/assets/js/common.js"></script>
 </body>

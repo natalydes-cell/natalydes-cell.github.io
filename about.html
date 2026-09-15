@@ -3,20 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>О сайте — Название сайта</title>
-  <meta name="description" content="О проекте: статьи и расчёты по эзотерическим темам.">
-  <link rel="canonical" href="https://example.com/about.html">
+  <title>О сайте — LUMINO</title>
+  <meta name="description" content="О проекте LUMINO: статьи и расчёты по эзотерическим темам.">
+  <link rel="canonical" href="https://natalydes-cell.github.io/about.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-  <header id="site-header"></header>
-  <main>
-    <div class="container">
-      <h1>О сайте</h1>
-      <p>Текст об авторе/проекте — заполнить.</p>
-    </div>
-  </main>
-  <footer id="site-footer"></footer>
+  <script>
+    window.PAGE_CRUMBS = [{ title: "Главная", href: "/" }, { title: "О проекте", href: "#" }];
+  </script>
+  <div class="overlay" id="overlay"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+    <main class="main is-article">
+      <div class="topbar" id="topbar"></div>
+      <div class="crumbs" id="crumbs"></div>
+      <article class="article">
+        <div class="article-header"><h1>О сайте</h1></div>
+        <div class="article-body">
+          <p>Текст об авторе/проекте — заполнить.</p>
+        </div>
+      </article>
+    </main>
+    <aside class="rightbar" id="rightbar"></aside>
+    <footer class="footer" id="footer"></footer>
+  </div>
   <script src="/assets/js/common.js"></script>
 </body>
 </html>

@@ -3,34 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Название сайта — эзотерика, расчёты и знания</title>
-  <meta name="description" content="Статьи и бесплатные расчёты по эзотерическим темам: нумерология, астрология, совместимость и другое.">
-  <link rel="canonical" href="https://example.com/">
+  <title>LUMINO — эзотерика, нумерология и знания о себе</title>
+  <meta name="description" content="Статьи и бесплатные онлайн-расчёты по эзотерическим темам: нумерология, астрология, дыхательные практики, ароматерапия и другое.">
+  <link rel="canonical" href="https://natalydes-cell.github.io/">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600&display=swap">
   <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-  <header id="site-header"></header>
+  <div class="overlay" id="overlay"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
 
-  <main>
-    <div class="container">
-      <h1>Добро пожаловать</h1>
-      <p>Здесь скоро появятся статьи по эзотерическим темам и бесплатные онлайн-расчёты. Раздел наполняется.</p>
+    <main class="main">
+      <div class="topbar" id="topbar"></div>
 
-      <div id="ad-top" class="ad-slot" data-ad-slot></div>
-
-      <h2>Последние статьи</h2>
-      <div class="card-grid" id="latest-articles">
-        <div class="card">
-          <h3><a href="/articles/_template.html">Заголовок статьи (пример)</a></h3>
-          <p>Краткое описание статьи — заменить после наполнения контентом.</p>
-        </div>
+      <div class="hero">
+        <svg class="arch"><use href="#ic-arch"/></svg>
+        <div class="word">LUMINO</div>
+        <div class="tagline">Гармония · Знания · Вдохновение</div>
+        <div class="crumbs" id="crumbs"></div>
+        <h1>Добро пожаловать!</h1>
+        <p>Здесь вы найдёте знания, которые помогут лучше понимать себя, мир и найти свой путь.</p>
       </div>
 
-      <div id="ad-bottom" class="ad-slot" data-ad-slot></div>
-    </div>
-  </main>
+      <div class="section-grid">
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-breath"/></svg><div class="tile-body"><p class="tile-title">Дыхание</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-pulse"/></svg><div class="tile-body"><p class="tile-title">Пульс планеты</p><span class="tile-link">Раздел готовится</span></div></div>
+        <a class="tile t3" href="/articles/numerologiya/"><div class="sweep"></div><svg class="icon"><use href="#ic-numerology"/></svg><div class="tile-body"><p class="tile-title">Нумерология</p><span class="tile-link">Перейти в раздел →</span></div></a>
+        <a class="tile t4" href="/articles/natalnaya-karta/"><div class="sweep"></div><svg class="icon"><use href="#ic-natal"/></svg><div class="tile-body"><p class="tile-title">Натальная карта</p><span class="tile-link">Перейти в раздел →</span></div></a>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-hd"/></svg><div class="tile-body"><p class="tile-title">Human Design</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-holo"/></svg><div class="tile-body"><p class="tile-title">Хологенетика</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-chakra"/></svg><div class="tile-body"><p class="tile-title">Чакры</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-lotus"/></svg><div class="tile-body"><p class="tile-title">Медитации</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-crystal"/></svg><div class="tile-body"><p class="tile-title">Камни</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-drop"/></svg><div class="tile-body"><p class="tile-title">Ароматерапия</p><span class="tile-link">Раздел готовится</span></div></div>
+        <div class="tile tile-soon"><svg class="icon"><use href="#ic-geometry"/></svg><div class="tile-body"><p class="tile-title">Сакральная геометрия</p><span class="tile-link">Раздел готовится</span></div></div>
+      </div>
 
-  <footer id="site-footer"></footer>
+      <div class="latest">
+        <h2>Последние статьи</h2>
+        <div class="articles">
+          <a class="article-card" href="/articles/natalnaya-karta/chto-takoe-natalnaya-karta.html">
+            <span class="article-cat">Натальная карта</span>
+            <p class="article-title">Что такое натальная карта и как её строят</p>
+            <span class="article-date">Читать →</span>
+          </a>
+          <a class="article-card" href="/articles/natalnaya-karta/osnovy-dzhyotisha-nakshatry.html">
+            <span class="article-cat">Натальная карта</span>
+            <p class="article-title">Основы джйотиша: сидерический зодиак и накшатры</p>
+            <span class="article-date">Читать →</span>
+          </a>
+          <a class="article-card" href="/articles/numerologiya/chto-takoe-kvadrat-pifagora.html">
+            <span class="article-cat">Нумерология</span>
+            <p class="article-title">Что такое квадрат Пифагора и как его построить по дате рождения</p>
+            <span class="article-date">Читать →</span>
+          </a>
+        </div>
+        <div id="ad-bottom" data-ad-slot></div>
+      </div>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+    <footer class="footer" id="footer"></footer>
+  </div>
 
   <script src="/assets/js/common.js"></script>
 </body>
