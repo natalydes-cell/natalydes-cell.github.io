@@ -32,6 +32,7 @@
           <div class="article-eyebrow">Нумерология · Калькулятор</div>
           <h1>Калькулятор квадрата Пифагора по дате рождения</h1>
           <div data-tags="нумерология, квадрат Пифагора, калькулятор, психоматрица"></div>
+          <div class="article-actions" data-article-actions></div>
         </div>
 
         <div id="ad-top" data-ad-slot></div>
@@ -41,13 +42,26 @@
 
           <div class="calculator" id="pifagora-calculator">
             <form id="pifagora-form" class="calc-form">
-              <div>
-                <label for="birthdate">Дата рождения</label>
-                <input type="date" id="birthdate" name="birthdate" required>
+              <div class="calc-date-fields">
+                <div class="calc-field">
+                  <label for="pf-day">День</label>
+                  <input type="text" inputmode="numeric" autocomplete="off" id="pf-day" name="day" list="pf-day-options" placeholder="ДД" maxlength="2" required>
+                  <datalist id="pf-day-options"></datalist>
+                </div>
+                <div class="calc-field">
+                  <label for="pf-month">Месяц</label>
+                  <input type="text" inputmode="numeric" autocomplete="off" id="pf-month" name="month" list="pf-month-options" placeholder="ММ" maxlength="2" required>
+                  <datalist id="pf-month-options"></datalist>
+                </div>
+                <div class="calc-field">
+                  <label for="pf-year">Год</label>
+                  <input type="text" inputmode="numeric" autocomplete="off" id="pf-year" name="year" list="pf-year-options" placeholder="ГГГГ" maxlength="4" required>
+                  <datalist id="pf-year-options"></datalist>
+                </div>
               </div>
               <button type="submit">Рассчитать</button>
             </form>
-            <p class="calc-error" id="pifagora-error" hidden>Пожалуйста, укажите дату рождения.</p>
+            <p class="calc-error" id="pifagora-error" hidden>Проверьте дату рождения — день, месяц и год должны быть заполнены и существовать в календаре.</p>
             <div class="calc-result" id="pifagora-result" hidden></div>
           </div>
 

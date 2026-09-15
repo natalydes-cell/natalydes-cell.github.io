@@ -127,9 +127,18 @@ function tierFor(count) {
   return Math.min(count, 4);
 }
 
+function pluralRaz(n) {
+  var mod10 = n % 10, mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) return "раз";
+  if (mod10 === 1) return "раз";
+  return "раза";
+}
+
 function renderPifagoraResult(result) {
   var el = document.getElementById("pifagora-result");
   if (!el) return;
+
+  var totalDigits = [1, 2, 3, 4, 5, 6, 7, 8, 9].reduce(function (s, n) { return s + result.counts[n]; }, 0);
 
   var numbersHtml =
     '<div class="calc-numbers">' +
@@ -141,17 +150,23 @@ function renderPifagoraResult(result) {
 
   var gridHtml = '<div class="psychomatrix">' + GRID_ORDER.map(function (digit) {
     var count = result.counts[digit];
-    return '<div class="psychomatrix-cell' + (count === 0 ? " empty" : "") + '">' +
-      '<span class="digit">' + digit + '</span><span class="count">' + count + "</span>" +
+    var filled = count > 0;
+    var display = filled ? String(digit).repeat(count) : String(digit);
+    return '<div class="psychomatrix-cell' + (filled ? " filled" : " empty") + '">' +
+      '<span class="count">' + display + "</span>" +
       "</div>";
   }).join("") + "</div>";
 
-  var readingsHtml = '<div class="cell-readings">' + [1, 2, 3, 4, 5, 6, 7, 8, 9].map(function (n) {
+  var readingsHtml = '<div class="cell-readings">' + GRID_ORDER.map(function (n) {
     var cell = CELLS[n];
     var count = result.counts[n];
     var text = cell.tiers[tierFor(count)];
-    return '<div class="cell-reading">' +
-      '<span class="cell-label">Ячейка ' + n + " · " + cell.name + " — " + count + "</span>" +
+    var lead = count > 0
+      ? "Цифра " + n + " встречается " + count + " " + pluralRaz(count) + " из " + totalDigits + " — активна " + count + "/" + totalDigits + "."
+      : "Цифра " + n + " не встречается ни разу из " + totalDigits + " — 0/" + totalDigits + ".";
+    return '<div class="cell-reading' + (count > 0 ? " filled" : " empty") + '">' +
+      '<div class="cell-heading"><span class="cell-digit">' + n + '</span><span class="cell-name">' + cell.name + "</span></div>" +
+      '<p class="cell-lead">' + lead + "</p>" +
       "<p>" + text + "</p>" +
       "</div>";
   }).join("") + "</div>";
@@ -160,20 +175,52 @@ function renderPifagoraResult(result) {
   el.hidden = false;
 }
 
+function pfPad(value, len) {
+  value = String(value || "").replace(/\D/g, "");
+  while (value.length < len) value = "0" + value;
+  return value;
+}
+
+function fillDatalist(id, from, to) {
+  var list = document.getElementById(id);
+  if (!list) return;
+  var html = "";
+  var pad = to <= 31;
+  for (var i = from; i <= to; i++) {
+    var v = pad ? pfPad(i, 2) : String(i);
+    html += '<option value="' + v + '"></option>';
+  }
+  list.innerHTML = html;
+}
+
 function initPifagoraCalculator() {
   var form = document.getElementById("pifagora-form");
   if (!form) return;
   var errorEl = document.getElementById("pifagora-error");
 
+  var currentYear = new Date().getFullYear();
+  fillDatalist("pf-day-options", 1, 31);
+  fillDatalist("pf-month-options", 1, 12);
+  fillDatalist("pf-year-options", currentYear - 100, currentYear);
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
-    var value = document.getElementById("birthdate").value; // формат YYYY-MM-DD
-    if (!value) return;
-    var parts = value.split("-");
-    var yyyy = parts[0], mm = parts[1], dd = parts[2];
+    var dd = pfPad(document.getElementById("pf-day").value, 2);
+    var mm = pfPad(document.getElementById("pf-month").value, 2);
+    var yyyy = document.getElementById("pf-year").value.replace(/\D/g, "");
+
+    var dayNum = parseInt(dd, 10), monthNum = parseInt(mm, 10), yearNum = parseInt(yyyy, 10);
+    var valid = yyyy.length === 4 && dayNum >= 1 && dayNum <= 31 && monthNum >= 1 && monthNum <= 12 && yearNum > 0;
+
+    if (!valid) {
+      if (errorEl) errorEl.hidden = false;
+      var resultEl = document.getElementById("pifagora-result");
+      if (resultEl) resultEl.hidden = true;
+      return;
+    }
 
     if (errorEl) errorEl.hidden = true;
-    var result = computePifagoraSquare(dd, mm, yyyy);
+    var result = computePifagoraSquare(dd, mm, String(yearNum));
     renderPifagoraResult(result);
   });
 }

@@ -78,6 +78,8 @@ var ICON_SPRITE =
   '<symbol id="ic-vk" viewBox="0 0 24 24"><path d="M4 4c0 9 4 13 8 13M20 4c-.4 3-2 6-4 8M4 4h3.2c.6 3 2 6.8 3.8 8 0-2.7 0-6.8-1-8H8M20 4h-3l-2 5 4 8h3l-4-6z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round" stroke-linecap="round"/></symbol>' +
   '<symbol id="ic-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="17" cy="7" r="1" fill="currentColor"/></symbol>' +
   '<symbol id="ic-yt" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 9.5L15 12l-4.5 2.5Z" fill="currentColor"/></symbol>' +
+  '<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20.2C12 20.2 3.5 15.4 3.5 9.4A4.6 4.6 0 0 1 12 6.8A4.6 4.6 0 0 1 20.5 9.4C20.5 15.4 12 20.2 12 20.2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>' +
+  '<symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3.5L14.6 9.3L21 10L16.2 14.2L17.5 20.5L12 17.2L6.5 20.5L7.8 14.2L3 10L9.4 9.3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>' +
   "</svg>";
 
 function icon(name, cls) {
@@ -147,6 +149,62 @@ function renderTags(tags, linkable) {
       ? '<a class="tag" href="/tags/?tag=' + encodeURIComponent(t) + '">' + t + "</a>"
       : '<span class="tag">' + t + "</span>";
   }).join("") + "</div>";
+}
+
+/*
+  Лайк и избранное — пока хранятся локально в браузере (localStorage), без сервера.
+  Ключ статьи — её путь (location.pathname), это же значение позже станет id при
+  переносе в профиль пользователя (см. STORAGE_KEYS ниже — при подключении профиля
+  эти же функции нужно переключить на чтение/запись через API, сохранив сигнатуру).
+*/
+var STORAGE_KEYS = { likes: "lumino_likes", favorites: "lumino_favorites" };
+
+function readStoredSet(key) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+
+function toggleStoredSet(key, id) {
+  var set = readStoredSet(key);
+  if (set[id]) {
+    delete set[id];
+  } else {
+    set[id] = true;
+  }
+  try {
+    localStorage.setItem(key, JSON.stringify(set));
+  } catch (e) {}
+  return !!set[id];
+}
+
+function renderArticleActions() {
+  var el = document.querySelector("[data-article-actions]");
+  if (!el) return;
+  var id = window.location.pathname;
+  var liked = !!readStoredSet(STORAGE_KEYS.likes)[id];
+  var favorited = !!readStoredSet(STORAGE_KEYS.favorites)[id];
+
+  function paint() {
+    el.innerHTML =
+      '<button type="button" class="action-btn action-like' + (liked ? " active" : "") + '" aria-pressed="' + liked + '">' +
+        icon("ic-heart") + '<span>' + (liked ? "Понравилось" : "Нравится") + "</span>" +
+      "</button>" +
+      '<button type="button" class="action-btn action-favorite' + (favorited ? " active" : "") + '" aria-pressed="' + favorited + '">' +
+        icon("ic-star") + '<span>' + (favorited ? "В избранном" : "В избранное") + "</span>" +
+      "</button>";
+    el.querySelector(".action-like").addEventListener("click", function () {
+      liked = toggleStoredSet(STORAGE_KEYS.likes, id);
+      paint();
+    });
+    el.querySelector(".action-favorite").addEventListener("click", function () {
+      favorited = toggleStoredSet(STORAGE_KEYS.favorites, id);
+      paint();
+    });
+  }
+  paint();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -275,6 +333,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderRightbar();
   renderFooter();
   renderTagPage();
+  renderArticleActions();
   initMobileNav();
   loadYandexMetrika();
   document.querySelectorAll("[data-ad-slot]").forEach(function (el) { renderAdSlot(el.id); });

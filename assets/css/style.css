@@ -153,6 +153,19 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .article h1{ font-size:1.7rem; line-height:1.25; margin:0 0 14px; text-wrap:balance; }
 .article-body{ font-size:1.02rem; line-height:1.75; }
 
+/* ---------- like / favorite ---------- */
+.article-actions{ display:flex; gap:10px; margin-top:14px; }
+.action-btn{
+  display:flex; align-items:center; gap:7px; padding:8px 14px;
+  background:var(--surface); border:1px solid var(--border); color:var(--text-muted);
+  font-size:0.8rem; cursor:pointer; transition:border-color .15s, color .15s;
+}
+.action-btn .icon{ width:16px; height:16px; }
+.action-btn:hover{ border-color:var(--accent); color:var(--text); }
+.action-btn.active{ border-color:var(--accent); color:var(--accent); background:var(--accent-soft); }
+.action-btn.action-like.active .icon{ fill:var(--accent); }
+.action-btn.action-favorite.active .icon{ fill:var(--accent); }
+
 .illustration{ margin:26px 0 0; }
 .illustration img{ width:100%; height:auto; display:block; }
 .illustration-fallback{
@@ -174,26 +187,48 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .article-example p:last-child{ margin-bottom:0; }
 /* ---------- calculator (квадрат Пифагора и другие) ---------- */
 .calculator{ margin:26px 0 34px; padding:22px; background:var(--surface); border:1px solid var(--border); }
-.calc-form{ display:flex; align-items:flex-end; gap:14px; flex-wrap:wrap; }
-.calc-form label{ font-size:0.78rem; color:var(--text-muted); display:block; margin-bottom:6px; }
-.calc-form input[type="date"]{ font:inherit; font-size:0.95rem; padding:10px 12px; border:1px solid var(--border); background:var(--bg); color:var(--text); }
+.calc-form{ display:flex; align-items:flex-end; justify-content:center; gap:14px; flex-wrap:wrap; }
+.calc-date-fields{ display:flex; gap:10px; }
+.calc-field{ display:flex; flex-direction:column; }
+.calc-field label{ font-size:0.78rem; color:var(--text-muted); display:block; margin-bottom:6px; }
+.calc-field input{
+  font:inherit; font-size:0.95rem; padding:10px 12px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); width:5.2em;
+}
+.calc-field input#pf-year{ width:6.5em; }
 .calc-form button{ background:var(--accent); color:var(--surface); padding:11px 22px; font-size:0.85rem; letter-spacing:0.03em; text-transform:uppercase; }
 .calc-form button:hover{ background:var(--text); }
-.calc-error{ color:#a35b4a; font-size:0.85rem; margin-top:12px; }
+.calc-error{ color:#a35b4a; font-size:0.85rem; margin-top:12px; text-align:center; }
 .calc-result{ margin-top:30px; }
-.calc-numbers{ display:flex; flex-wrap:wrap; gap:10px; margin-bottom:26px; }
+.calc-numbers{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-bottom:26px; }
 .calc-number{ background:var(--bg); border:1px solid var(--border); padding:8px 14px; font-size:0.8rem; color:var(--text-muted); }
 .calc-number b{ font-family:"Fraunces",serif; font-size:1.1rem; color:var(--text); margin-left:6px; }
+
 .psychomatrix{ display:grid; grid-template-columns:repeat(3,1fr); gap:2px; max-width:280px; margin:0 auto 30px; border:1px solid var(--border); background:var(--border); }
-.psychomatrix-cell{ aspect-ratio:1/1; background:var(--surface); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; }
-.psychomatrix-cell .digit{ font-family:"Work Sans",sans-serif; font-size:0.68rem; letter-spacing:0.04em; color:var(--text-muted); text-transform:uppercase; }
-.psychomatrix-cell .count{ font-family:"Fraunces",serif; font-size:1.7rem; font-weight:600; color:var(--accent); }
-.psychomatrix-cell.empty .count{ color:var(--text-muted); opacity:0.4; }
-.cell-readings{ display:flex; flex-direction:column; gap:16px; }
-.cell-reading{ padding-bottom:16px; border-bottom:1px solid var(--border); }
-.cell-reading:last-child{ border-bottom:none; padding-bottom:0; }
-.cell-reading .cell-label{ font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--accent); display:block; margin-bottom:6px; }
-.cell-reading p{ margin:0; }
+.psychomatrix-cell{ aspect-ratio:1/1; display:flex; align-items:center; justify-content:center; padding:4px; }
+.psychomatrix-cell .count{
+  font-family:"Fraunces",serif; font-weight:600; text-align:center; line-height:1.1;
+  font-size:1.5rem; word-break:break-all; font-variant-numeric:tabular-nums;
+}
+.psychomatrix-cell.filled{ background:var(--accent-soft); }
+.psychomatrix-cell.filled .count{ color:var(--text); }
+.psychomatrix-cell.empty{ background:var(--surface); }
+.psychomatrix-cell.empty .count{ color:var(--text-muted); opacity:0.45; font-size:1.7rem; }
+
+.cell-readings{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+.cell-reading{ padding:16px; background:var(--bg); border:1px solid var(--border); }
+.cell-reading.filled{ border-color:var(--accent); }
+.cell-heading{ display:flex; align-items:baseline; gap:8px; margin-bottom:8px; }
+.cell-reading .cell-digit{ font-family:"Fraunces",serif; font-size:1.6rem; font-weight:600; color:var(--accent); }
+.cell-reading.empty .cell-digit{ color:var(--text-muted); }
+.cell-reading .cell-name{ font-size:0.78rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-muted); }
+.cell-reading .cell-lead{ font-size:0.86rem; font-weight:600; color:var(--text); margin:0 0 8px; }
+.cell-reading.empty .cell-lead{ font-weight:500; color:var(--text-muted); }
+.cell-reading p{ margin:0; font-size:0.92rem; line-height:1.55; }
+
+@media (max-width: 600px){
+  .cell-readings{ grid-template-columns:1fr; }
+}
 
 .sources{ margin-top:44px; padding-top:22px; border-top:1px solid var(--border); }
 .sources h3{ font-size:0.95rem; margin:0 0 10px; }
