@@ -79,6 +79,7 @@ var ICON_SPRITE =
   '<symbol id="ic-ig" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="17" cy="7" r="1" fill="currentColor"/></symbol>' +
   '<symbol id="ic-yt" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="3" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10.5 9.5L15 12l-4.5 2.5Z" fill="currentColor"/></symbol>' +
   '<symbol id="ic-heart" viewBox="0 0 24 24"><path d="M12 20.2C12 20.2 3.5 15.4 3.5 9.4A4.6 4.6 0 0 1 12 6.8A4.6 4.6 0 0 1 20.5 9.4C20.5 15.4 12 20.2 12 20.2Z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>' +
+  '<symbol id="ic-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="8.3" r="0.9" fill="currentColor"/><path d="M12 11.2V16.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></symbol>' +
   '<symbol id="ic-star" viewBox="0 0 24 24"><path d="M12 3.5L14.6 9.3L21 10L16.2 14.2L17.5 20.5L12 17.2L6.5 20.5L7.8 14.2L3 10L9.4 9.3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></symbol>' +
   "</svg>";
 
@@ -257,6 +258,175 @@ function renderTagPage() {
   mount.innerHTML = head + body;
 }
 
+/* ---------- виджеты правой колонки: фаза Луны, К-индекс, восход/закат ---------- */
+var LUMINO_LOCATION = { lat: 55.7558, lon: 37.6176, tz: "Europe/Moscow" };
+var SYNODIC_MONTH = 29.530588853;
+var ZODIAC_SIGNS = ["Овен", "Телец", "Близнецы", "Рак", "Лев", "Дева", "Весы", "Скорпион", "Стрелец", "Козерог", "Водолей", "Рыбы"];
+
+function toJulianDate(date) {
+  return date.getTime() / 86400000 + 2440587.5;
+}
+
+function normalizeDegrees(deg) {
+  deg = deg % 360;
+  return deg < 0 ? deg + 360 : deg;
+}
+
+function pluralDay(n) {
+  var mod10 = n % 10, mod100 = n % 100;
+  if (mod100 >= 11 && mod100 <= 14) return "дней";
+  if (mod10 === 1) return "день";
+  if (mod10 >= 2 && mod10 <= 4) return "дня";
+  return "дней";
+}
+
+/*
+  Расчёт положения Луны низкой точности (~1°) по формулам Paul Schlyter /
+  Meeus — этого достаточно, чтобы верно определить знак зодиака и фазу,
+  но не претендует на точность профессиональной эфемериды.
+*/
+function computeMoonState(date) {
+  var jd = toJulianDate(date);
+  var d = jd - 2451545.0;
+
+  var L = normalizeDegrees(218.316 + 13.176396 * d);
+  var M = normalizeDegrees(134.963 + 13.064993 * d);
+  var meanDailyMotion = 13.176396;
+  var lonDeg = normalizeDegrees(L + 6.289 * Math.sin(M * Math.PI / 180));
+
+  var signIndex = Math.floor(lonDeg / 30);
+  var degInSign = lonDeg - signIndex * 30;
+  var daysLeftInSign = (30 - degInSign) / meanDailyMotion;
+
+  var refNewMoon = 2451550.26; // 6 января 2000, 18:14 UTC
+  var age = (jd - refNewMoon) % SYNODIC_MONTH;
+  if (age < 0) age += SYNODIC_MONTH;
+
+  var illumination = (1 - Math.cos((age / SYNODIC_MONTH) * 2 * Math.PI)) / 2;
+  var isWaxing = age < SYNODIC_MONTH / 2;
+
+  var phaseName;
+  if (age < 1.84566) phaseName = "Новолуние";
+  else if (age < 5.53699) phaseName = "Растущий серп";
+  else if (age < 9.22831) phaseName = "Первая четверть";
+  else if (age < 12.91963) phaseName = "Растущая Луна";
+  else if (age < 16.61096) phaseName = "Полнолуние";
+  else if (age < 20.30228) phaseName = "Убывающая Луна";
+  else if (age < 23.99361) phaseName = "Последняя четверть";
+  else if (age < 27.68493) phaseName = "Убывающий серп";
+  else phaseName = "Новолуние";
+
+  var daysToFullMoon = SYNODIC_MONTH / 2 - age;
+  if (daysToFullMoon < 0) daysToFullMoon += SYNODIC_MONTH;
+
+  return {
+    signName: ZODIAC_SIGNS[signIndex],
+    daysLeftInSign: Math.max(0, Math.round(daysLeftInSign)),
+    phaseName: phaseName,
+    illumination: illumination,
+    isWaxing: isWaxing,
+    daysToFullMoon: Math.round(daysToFullMoon)
+  };
+}
+
+function renderMoonWidget() {
+  var el = document.getElementById("widget-moon");
+  if (!el) return;
+  var s = computeMoonState(new Date());
+  var shadowWidth = (1 - s.illumination) * 100;
+  var shadowLeft = s.isWaxing ? s.illumination * 100 : 0;
+  var fullMoonText = s.daysToFullMoon === 0
+    ? "сегодня"
+    : "через " + s.daysToFullMoon + " " + pluralDay(s.daysToFullMoon);
+  var signDaysText = s.daysLeftInSign === 0 ? "меньше дня" : s.daysLeftInSign + " " + pluralDay(s.daysLeftInSign);
+
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-moon") + "Фаза луны</div>" +
+    '<div class="moon-row">' +
+      '<div class="moon-disc"><span class="moon-shadow" style="left:' + shadowLeft + '%; width:' + shadowWidth + '%;"></span></div>' +
+      '<div><div class="moon-name">' + s.phaseName + '</div>' +
+      '<div class="moon-sign">Луна в знаке ' + s.signName + " · ещё " + signDaysText + "</div></div>" +
+    "</div>" +
+    '<div class="moon-next">До полнолуния: ' + fullMoonText + "</div>";
+}
+
+function kIndexZone(value) {
+  if (value < 3) return { label: "Спокойная обстановка", cls: "quiet" };
+  if (value < 5) return { label: "Повышенная активность", cls: "elevated" };
+  return { label: "Геомагнитная буря", cls: "storm" };
+}
+
+function renderKIndexWidget() {
+  var el = document.getElementById("widget-kindex");
+  if (!el) return;
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-wave") + "К-индекс" +
+      '<button type="button" class="info-btn" data-kindex-info aria-expanded="false" aria-label="Что такое К-индекс">' + icon("ic-info") + "</button>" +
+    "</div>" +
+    '<p class="widget-info" id="kindex-info-text" hidden>К-индекс — показатель геомагнитной активности Земли по шкале от 0 до 9. 0–2 — спокойная магнитосфера, 3–4 — заметные возмущения, 5 и выше — геомагнитная буря, которая иногда ощущается как усталость или головная боль у чувствительных людей.</p>' +
+    '<div class="stat-num" id="kindex-value">…</div>' +
+    '<div class="stat-sub" id="kindex-sub">Загружаем данные NOAA…</div>' +
+    '<div class="kindex-scale">' +
+      '<div class="kindex-track">' +
+        '<span class="kindex-zone zone-quiet"></span>' +
+        '<span class="kindex-zone zone-elevated"></span>' +
+        '<span class="kindex-zone zone-storm"></span>' +
+        '<span class="kindex-marker" id="kindex-marker"></span>' +
+      "</div>" +
+      '<div class="kindex-scale-labels"><span>спокойно</span><span>повышено</span><span>буря</span></div>' +
+    "</div>";
+
+  var infoBtn = el.querySelector("[data-kindex-info]");
+  infoBtn.addEventListener("click", function () {
+    var info = document.getElementById("kindex-info-text");
+    var expanded = infoBtn.getAttribute("aria-expanded") === "true";
+    info.hidden = expanded;
+    infoBtn.setAttribute("aria-expanded", String(!expanded));
+  });
+
+  fetch("https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      var last = rows[rows.length - 1];
+      var value = Math.round(last.Kp * 10) / 10;
+      var zone = kIndexZone(value);
+      document.getElementById("kindex-value").textContent = value.toFixed(1);
+      document.getElementById("kindex-sub").textContent = zone.label;
+      var marker = document.getElementById("kindex-marker");
+      marker.style.left = Math.min(100, (value / 9) * 100) + "%";
+      marker.className = "kindex-marker zone-" + zone.cls;
+    })
+    .catch(function () {
+      document.getElementById("kindex-sub").textContent = "Не удалось получить данные NOAA";
+    });
+}
+
+function renderTodayWidget() {
+  var el = document.getElementById("widget-today");
+  if (!el) return;
+  var now = new Date();
+  var dateStr = now.toLocaleDateString("ru-RU", { day: "numeric", month: "long", weekday: "long" });
+  dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-sun") + "Сегодня</div>" +
+    '<div class="today-date">' + dateStr + "</div>" +
+    '<div class="today-sun">' +
+      '<div class="today-sun-item"><span class="today-sun-label">Восход</span><span class="today-sun-time" id="today-sunrise">—:—</span></div>' +
+      '<div class="today-sun-item"><span class="today-sun-label">Закат</span><span class="today-sun-time" id="today-sunset">—:—</span></div>' +
+    "</div>";
+
+  fetch("https://api.sunrise-sunset.org/json?lat=" + LUMINO_LOCATION.lat + "&lng=" + LUMINO_LOCATION.lon + "&formatted=0")
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (data.status !== "OK") throw new Error("bad status");
+      var fmt = { hour: "2-digit", minute: "2-digit", timeZone: LUMINO_LOCATION.tz };
+      document.getElementById("today-sunrise").textContent = new Date(data.results.sunrise).toLocaleTimeString("ru-RU", fmt);
+      document.getElementById("today-sunset").textContent = new Date(data.results.sunset).toLocaleTimeString("ru-RU", fmt);
+    })
+    .catch(function () {});
+}
+
 function renderRightbar() {
   var el = document.getElementById("rightbar");
   if (!el) return;
@@ -266,17 +436,13 @@ function renderRightbar() {
       '<div class="profile-text"><div class="profile-hi">Привет, Гость</div><a class="profile-link" href="#">Мой профиль →</a></div>' +
       icon("ic-gear", "gear") +
     "</div>" +
-    '<div class="widget">' +
-      '<div class="widget-label">' + icon("ic-moon") + "Фаза луны" + '<span class="example-tag">пример</span></div>' +
-      '<div class="moon-row"><div class="moon-disc"></div><div><div class="moon-name">Растущая луна</div><div class="moon-day">12 день</div></div></div>' +
-      '<a class="widget-more" href="/articles/puls-planety/">Подробнее →</a>' +
-    "</div>" +
-    '<div class="widget">' +
-      '<div class="widget-label">' + icon("ic-wave") + "К-индекс" + '<span class="example-tag">пример</span></div>' +
-      '<div class="stat-num">3.7</div><div class="stat-sub">Спокойная обстановка</div>' +
-      '<div class="bar"><span style="width:46%"></span></div>' +
-    "</div>" +
+    '<div class="widget" id="widget-moon"></div>' +
+    '<div class="widget" id="widget-kindex"></div>' +
+    '<div class="widget" id="widget-today"></div>' +
     '<div class="widget-ad"><div class="widget-label">Реклама</div><div class="banner-ad-slot" style="text-align:left;">рекламный блок РСЯ · 300×250</div></div>';
+  renderMoonWidget();
+  renderKIndexWidget();
+  renderTodayWidget();
 }
 
 function renderFooter() {
