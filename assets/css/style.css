@@ -134,7 +134,9 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .latest h2{ font-size:1.2rem; font-weight:500; margin:0 0 26px; display:flex; align-items:center; gap:18px; }
 .latest h2::before, .latest h2::after{ content:""; flex:1; height:1px; background:var(--border); }
 .articles{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.article-thumb{ aspect-ratio:16/11; border-radius:0; }
+
+.article-card .article-thumb{ margin:-18px -18px 0; aspect-ratio:1/1; overflow:hidden; background:var(--bg); }
+.article-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
 
 .banner-ad{ margin:36px 0; border:1px dashed var(--border); background:var(--surface); padding:18px 22px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .banner-ad-label{ font-size:0.62rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); white-space:nowrap; }
