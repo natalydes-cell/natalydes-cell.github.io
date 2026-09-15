@@ -10,13 +10,13 @@
 */
 
 var SITE_CONFIG = {
-  siteName: "LUMINO",
-  tagline: "Гармония · Знания · Вдохновение",
+  siteName: "ATMAMAPA",
+  tagline: "Карта пути к себе",
   baseUrl: "https://natalydes-cell.github.io", // поменять после покупки домена
   yandexMetrikaId: null,          // вписать номер счётчика после регистрации в Яндекс.Метрике
   yandexAdBlockId: null,          // вписать ID рекламного блока после подключения РСЯ
   nav: [
-    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: false },
+    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: true  },
     { title: "Пульс планеты",        href: "/articles/puls-planety/",   icon: "ic-pulse",      ready: false },
     { title: "Нумерология",          href: "/articles/numerologiya/",   icon: "ic-numerology", ready: true  },
     { title: "Натальная карта",      href: "/articles/natalnaya-karta/",icon: "ic-natal",      ready: true  },
@@ -356,6 +356,55 @@ function kIndexZone(value) {
   return { label: "Геомагнитная буря", cls: "storm" };
 }
 
+function schumannZone(kpValue) {
+  return kpValue < 4
+    ? { cls: "norm", label: "В пределах нормы для человека" }
+    : { cls: "high", label: "Выше нормы — возможен всплеск активности" };
+}
+
+function renderSchumannWidget() {
+  var el = document.getElementById("widget-schumann");
+  if (!el) return;
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-pulse") + "Шуманн" +
+      '<button type="button" class="info-btn" data-schumann-info aria-expanded="false" aria-label="Что такое резонанс Шумана">' + icon("ic-info") + "</button>" +
+    "</div>" +
+    '<p class="widget-info" id="schumann-info-text" hidden>Базовая частота резонанса Шумана — 7.83 Гц, её амплитуда растёт вместе с геомагнитной активностью. Риска на шкале — текущий уровень этой активности по данным NOAA.</p>' +
+    '<div class="stat-num" id="schumann-value">…</div>' +
+    '<div class="stat-sub" id="schumann-sub">Загружаем геомагнитные данные…</div>' +
+    '<div class="kindex-scale">' +
+      '<div class="kindex-track">' +
+        '<span class="kindex-zone zone-norm"></span>' +
+        '<span class="kindex-zone zone-high"></span>' +
+        '<span class="kindex-marker" id="schumann-marker"></span>' +
+      "</div>" +
+      '<div class="schumann-scale-labels"><span>норма</span><span>повышена</span></div>' +
+    "</div>";
+
+  var infoBtn = el.querySelector("[data-schumann-info]");
+  infoBtn.addEventListener("click", function () {
+    var info = document.getElementById("schumann-info-text");
+    var expanded = infoBtn.getAttribute("aria-expanded") === "true";
+    info.hidden = expanded;
+    infoBtn.setAttribute("aria-expanded", String(!expanded));
+  });
+
+  fetch("https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      var last = rows[rows.length - 1];
+      var value = Math.round(last.Kp * 10) / 10;
+      var zone = schumannZone(value);
+      document.getElementById("schumann-value").innerHTML = value.toFixed(1) + ' <span class="stat-unit">Kp</span>';
+      document.getElementById("schumann-sub").textContent = zone.label;
+      var marker = document.getElementById("schumann-marker");
+      marker.style.left = Math.min(100, (value / 9) * 100) + "%";
+    })
+    .catch(function () {
+      document.getElementById("schumann-sub").textContent = "Не удалось получить данные NOAA";
+    });
+}
+
 function renderKIndexWidget() {
   var el = document.getElementById("widget-kindex");
   if (!el) return;
@@ -431,18 +480,15 @@ function renderRightbar() {
   var el = document.getElementById("rightbar");
   if (!el) return;
   el.innerHTML =
-    '<div class="profile">' +
-      '<div class="avatar">Г</div>' +
-      '<div class="profile-text"><div class="profile-hi">Привет, Гость</div><a class="profile-link" href="#">Мой профиль →</a></div>' +
-      icon("ic-gear", "gear") +
-    "</div>" +
-    '<div class="widget" id="widget-moon"></div>' +
-    '<div class="widget" id="widget-kindex"></div>' +
     '<div class="widget" id="widget-today"></div>' +
+    '<div class="widget" id="widget-moon"></div>' +
+    '<div class="widget" id="widget-schumann"></div>' +
+    '<div class="widget" id="widget-kindex"></div>' +
     '<div class="widget-ad"><div class="widget-label">Реклама</div><div class="banner-ad-slot" style="text-align:left;">рекламный блок РСЯ · 300×250</div></div>';
-  renderMoonWidget();
-  renderKIndexWidget();
   renderTodayWidget();
+  renderMoonWidget();
+  renderSchumannWidget();
+  renderKIndexWidget();
 }
 
 function renderFooter() {
