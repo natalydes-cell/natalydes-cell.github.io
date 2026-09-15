@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Калькулятор квадрата Пифагора по дате рождения — LUMINO</title>
+  <meta name="description" content="Онлайн-расчёт квадрата Пифагора (психоматрицы) по дате рождения: четыре рабочих числа, готовый квадрат и расшифровка всех девяти ячеек по системе А.Ф. Александрова.">
+  <link rel="canonical" href="https://natalydes-cell.github.io/articles/numerologiya/kalkulyator-kvadrat-pifagora.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <script>
+    window.PAGE_CRUMBS = [
+      { title: "Главная", href: "/" },
+      { title: "Нумерология", href: "/articles/numerologiya/" },
+      { title: "Калькулятор", href: "#" }
+    ];
+  </script>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main is-article">
+      <div class="topbar" id="topbar"></div>
+      <div class="crumbs" id="crumbs"></div>
+
+      <article class="article">
+        <div class="article-header">
+          <div class="article-eyebrow">Нумерология · Калькулятор</div>
+          <h1>Калькулятор квадрата Пифагора по дате рождения</h1>
+          <div data-tags="нумерология, квадрат Пифагора, калькулятор, психоматрица"></div>
+        </div>
+
+        <div id="ad-top" data-ad-slot></div>
+
+        <div class="article-body">
+          <p>Введите дату рождения — калькулятор рассчитает четыре рабочих числа, построит квадрат Пифагора и покажет расшифровку каждой из девяти ячеек по системе А.Ф. Александрова. Как именно считаются рабочие числа и на чём основана методика — подробно разобрано в статье <a href="/articles/numerologiya/chto-takoe-kvadrat-pifagora.html">«Что такое квадрат Пифагора»</a>.</p>
+
+          <div class="calculator" id="pifagora-calculator">
+            <form id="pifagora-form" class="calc-form">
+              <div>
+                <label for="birthdate">Дата рождения</label>
+                <input type="date" id="birthdate" name="birthdate" required>
+              </div>
+              <button type="submit">Рассчитать</button>
+            </form>
+            <p class="calc-error" id="pifagora-error" hidden>Пожалуйста, укажите дату рождения.</p>
+            <div class="calc-result" id="pifagora-result" hidden></div>
+          </div>
+
+          <p>Ни одна ячейка не работает в отрыве от остальных — полную картину и то, как ячейки уравновешивают друг друга, лучше читать вместе со статьёй <a href="/articles/numerologiya/kak-ispolzovat-raschet-na-praktike.html">«Как использовать расчёт на практике»</a>.</p>
+
+          <div class="disclaimer">Расчёт по квадрату Пифагора — нумерологическая практика, а не психологический тест или медицинский инструмент. Он не заменяет консультацию специалиста и не должен восприниматься как окончательная характеристика личности.</div>
+        </div>
+
+        <div class="sources">
+          <h3>Источники</h3>
+          <ol>
+            <li>Александров А. Ф. Дата рождения — ключ к пониманию человека.</li>
+            <li>Александров А. Ф. Цифровой анализ дат рождения и событий. Книга 1. Психоматрица и её свойства.</li>
+            <li>Александров А. Ф. Даты и судьбы. Большая книга нумерологии.</li>
+          </ol>
+        </div>
+
+        <div id="ad-bottom" data-ad-slot></div>
+      </article>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+    <footer class="footer" id="footer"></footer>
+  </div>
+
+  <script src="/assets/js/common.js"></script>
+  <script src="/assets/js/calculators/kvadrat-pifagora.js"></script>
+</body>
+</html>
