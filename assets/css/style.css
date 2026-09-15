@@ -110,6 +110,9 @@ img{ max-width:100%; display:block; }
   font-size:0.72rem; padding:4px 11px; background:var(--surface); border:1px solid var(--border);
   color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;
 }
+a.tag:hover{ border-color:var(--accent); color:var(--accent); }
+.tag-cloud a.tag{ font-size:0.8rem; padding:6px 13px; }
+.tag-count{ opacity:0.6; margin-left:2px; }
 
 /* ---------- article list / category page ---------- */
 .article-list-head{ margin-bottom:8px; }
@@ -143,8 +146,16 @@ img{ max-width:100%; display:block; }
 .article-header{ margin-bottom:26px; }
 .article-eyebrow{ font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
 .article h1{ font-size:1.7rem; line-height:1.25; margin:0 0 14px; text-wrap:balance; }
-.article-meta{ font-size:0.82rem; color:var(--text-muted); margin-bottom:16px; }
 .article-body{ font-size:1.02rem; line-height:1.75; }
+
+.illustration{ margin:26px 0 0; }
+.illustration img{ width:100%; aspect-ratio:3/2; object-fit:cover; }
+.illustration-fallback{
+  display:none; aspect-ratio:3/2; background:var(--surface); border:1px dashed var(--border);
+  align-items:center; justify-content:center; flex-direction:column; gap:6px; padding:20px; text-align:center;
+}
+.illustration-fallback .fb-id{ font-family:"Work Sans",sans-serif; font-size:0.68rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--accent); }
+.illustration-fallback .fb-note{ font-size:0.78rem; color:var(--text-muted); }
 .article-body h2{ font-size:1.25rem; font-weight:600; margin:38px 0 14px; }
 .article-body h3{ font-size:1.05rem; font-weight:600; margin:26px 0 10px; }
 .article-body p{ margin:0 0 18px; }
@@ -176,8 +187,8 @@ img{ max-width:100%; display:block; }
 .profile-link{ font-size:0.78rem; color:var(--text-muted); }
 .gear{ width:18px; height:18px; color:var(--text-muted); }
 
-.widget{ background:var(--surface); border:1px solid var(--border); border-radius:0; padding:16px; }
-.widget-ad{ background:var(--surface); border:1px dashed var(--border); border-radius:0; padding:16px; }
+.widget, .widget-ad{ background:var(--surface); border:1px solid var(--border); padding:16px; }
+.widget-ad{ border-style:dashed; }
 .widget-label{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .widget-label .icon{ width:15px; height:15px; color:var(--accent); }
 .moon-row{ display:flex; align-items:center; gap:14px; }

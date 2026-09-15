@@ -30,6 +30,29 @@ var SITE_CONFIG = {
   ]
 };
 
+/*
+  Реестр статей — используется для страницы тегов (/tags/), чтобы собирать
+  все статьи с одним тегом на одной странице без отдельного файла на каждый тег.
+
+  ВАЖНО: при добавлении новой статьи добавляй её и сюда (иначе она не найдётся
+  по тегам), и в index.html соответствующего раздела (карточка в списке).
+*/
+var ARTICLES = [
+  { title: "Что такое квадрат Пифагора и как его построить по дате рождения", href: "/articles/numerologiya/chto-takoe-kvadrat-pifagora.html", cat: "Нумерология", excerpt: "Откуда взялась методика, как посчитать четыре рабочих числа и разместить цифры в квадрате 3×3 — с примером расчёта.", tags: ["нумерология", "квадрат Пифагора", "психоматрица", "дата рождения"] },
+  { title: "Первое рабочее число: характер и сила воли", href: "/articles/numerologiya/pervoe-rabochee-chislo-harakter.html", cat: "Нумерология", excerpt: "Что означает количество единиц в квадрате — от нехватки характера до избытка упорства, и как это читать без крайностей.", tags: ["нумерология", "квадрат Пифагора", "характер", "психоматрица"] },
+  { title: "Энергетика, здоровье и трудолюбие в квадрате", href: "/articles/numerologiya/energiya-zdorovie-trudolyubie.html", cat: "Нумерология", excerpt: "Три ячейки, которые отвечают за жизненный тонус, склонность к болезням и отношение к труду — разбираем по отдельности.", tags: ["нумерология", "квадрат Пифагора", "здоровье", "энергия", "трудолюбие"] },
+  { title: "Логика, интуиция и удача: как читать оставшиеся ячейки", href: "/articles/numerologiya/logika-intuiciya-udacha.html", cat: "Нумерология", excerpt: "Логика, склонность к интуитивному познанию, удача, чувство долга и память — пять ячеек, которые редко разбирают подробно.", tags: ["нумерология", "квадрат Пифагора", "логика", "интуиция", "удача"] },
+  { title: "Как использовать расчёт квадрата Пифагора на практике", href: "/articles/numerologiya/kak-ispolzovat-raschet-na-praktike.html", cat: "Нумерология", excerpt: "Собираем полную картину по всем девяти ячейкам, разбираем частые ошибки при самостоятельном расчёте и границы метода.", tags: ["нумерология", "квадрат Пифагора", "самопознание", "психоматрица"] },
+  { title: "Что такое натальная карта и как её строят", href: "/articles/natalnaya-karta/chto-takoe-natalnaya-karta.html", cat: "Натальная карта", excerpt: "Какие данные нужны для расчёта, из чего состоит карта и в чём ключевое различие тропического и сидерического зодиака.", tags: ["натальная карта", "астрология", "зодиак", "джйотиш"] },
+  { title: "Планеты в натальной карте: общее значение", href: "/articles/natalnaya-karta/planety-v-natalnoy-karte.html", cat: "Натальная карта", excerpt: "Что символизирует каждая планета — от Солнца до Сатурна — и где смысл совпадает в обеих традициях, а где расходится.", tags: ["натальная карта", "планеты", "астрология"] },
+  { title: "Дома натальной карты: 12 сфер жизни", href: "/articles/natalnaya-karta/doma-natalnoy-karty.html", cat: "Натальная карта", excerpt: "За что отвечает каждый из 12 домов — от личности и денег до отношений и карьеры.", tags: ["натальная карта", "дома", "бхавы", "астрология"] },
+  { title: "Знаки зодиака в западной астрологии", href: "/articles/natalnaya-karta/znaki-zodiaka-zapadnaya-astrologiya.html", cat: "Натальная карта", excerpt: "Стихии, качества и характеристики 12 знаков тропического зодиака.", tags: ["натальная карта", "знаки зодиака", "западная астрология"] },
+  { title: "Аспекты между планетами", href: "/articles/natalnaya-karta/aspekty-mezhdu-planetami.html", cat: "Натальная карта", excerpt: "Соединения, квадраты, трины и оппозиции — как по углам между планетами читают напряжение и гармонию в карте.", tags: ["натальная карта", "аспекты", "западная астрология"] },
+  { title: "Основы джйотиша: сидерический зодиак и накшатры", href: "/articles/natalnaya-karta/osnovy-dzhyotisha-nakshatry.html", cat: "Натальная карта", excerpt: "27 лунных стоянок и почему ведическая астрология смотрит на Луну там, где западная смотрит на Солнце.", tags: ["натальная карта", "джйотиш", "накшатры", "ведическая астрология"] },
+  { title: "Раши, бхавы и даши в джйотише", href: "/articles/natalnaya-karta/rashi-bhavy-dashi-dzhyotish.html", cat: "Натальная карта", excerpt: "Дома и планетные периоды — то, что задаёт хронологию жизненных событий в ведической астрологии.", tags: ["натальная карта", "джйотиш", "даши", "ведическая астрология"] },
+  { title: "Западная и ведическая астрология: в чём разница и как выбрать подход", href: "/articles/natalnaya-karta/zapadnaya-i-vedicheskaya-astrologiya-raznica.html", cat: "Натальная карта", excerpt: "Собираем всё вместе: почему знаки отличаются, что выбрать для практики и можно ли использовать обе традиции сразу.", tags: ["натальная карта", "астрология", "джйотиш", "сравнение"] }
+];
+
 var ICON_SPRITE =
   '<svg style="display:none">' +
   '<symbol id="ic-crest" viewBox="0 0 40 40"><path d="M20 4 L34 10V22C34 30 28 35 20 37C12 35 6 30 6 22V10Z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M20 12 A8 8 0 1 0 20 28 A6.4 6.4 0 1 1 20 12Z" fill="currentColor"/></symbol>' +
@@ -116,19 +139,64 @@ function renderCrumbs() {
   }).join('<span class="crumb-sep">/</span>');
 }
 
-function renderTags(tags) {
+function renderTags(tags, linkable) {
   if (!tags || !tags.length) return "";
   return '<div class="tags">' + tags.map(function (t) {
-    return '<span class="tag">' + t + "</span>";
+    return linkable
+      ? '<a class="tag" href="/tags/?tag=' + encodeURIComponent(t) + '">' + t + "</a>"
+      : '<span class="tag">' + t + "</span>";
   }).join("") + "</div>";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll("[data-tags]").forEach(function (el) {
     var tags = el.getAttribute("data-tags").split(",").map(function (t) { return t.trim(); });
-    el.innerHTML = renderTags(tags);
+    // Внутри карточки-ссылки (article-card) теги не делаем ссылками — вложенная
+    // ссылка в ссылке ломает клик по карточке. На странице статьи (не внутри <a>) — кликабельны.
+    var linkable = !el.closest("a");
+    el.innerHTML = renderTags(tags, linkable);
   });
 });
+
+function renderTagPage() {
+  var mount = document.getElementById("tag-page");
+  if (!mount) return;
+  var tag = new URLSearchParams(window.location.search).get("tag");
+
+  if (!tag) {
+    var counts = {};
+    ARTICLES.forEach(function (a) {
+      a.tags.forEach(function (t) { counts[t] = (counts[t] || 0) + 1; });
+    });
+    var allTags = Object.keys(counts).sort(function (a, b) { return a.localeCompare(b, "ru"); });
+    mount.innerHTML =
+      '<div class="article-list-head"><h1>Все теги</h1><p>Выберите тег, чтобы увидеть все статьи по этой теме.</p></div>' +
+      '<div class="tags tag-cloud">' + allTags.map(function (t) {
+        return '<a class="tag" href="/tags/?tag=' + encodeURIComponent(t) + '">' + t + ' <span class="tag-count">' + counts[t] + "</span></a>";
+      }).join("") + "</div>";
+    return;
+  }
+
+  var norm = tag.trim().toLowerCase();
+  var matches = ARTICLES.filter(function (a) {
+    return a.tags.some(function (t) { return t.toLowerCase() === norm; });
+  });
+
+  var head = '<div class="article-list-head"><h1>Тег: ' + tag + "</h1><p>" +
+    matches.length + (matches.length === 1 ? " статья" : " статей") + " с этим тегом.</p></div>";
+
+  var body = matches.length
+    ? '<div class="article-grid">' + matches.map(function (a) {
+        return '<a class="article-card" href="' + a.href + '">' +
+          '<span class="article-cat">' + a.cat + "</span>" +
+          '<p class="article-title">' + a.title + "</p>" +
+          '<p class="article-excerpt">' + a.excerpt + "</p>" +
+        "</a>";
+      }).join("") + "</div>"
+    : "<p>Пока нет статей с этим тегом.</p>";
+
+  mount.innerHTML = head + body;
+}
 
 function renderRightbar() {
   var el = document.getElementById("rightbar");
@@ -205,6 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
   renderCrumbs();
   renderRightbar();
   renderFooter();
+  renderTagPage();
   initMobileNav();
   loadYandexMetrika();
   document.querySelectorAll("[data-ad-slot]").forEach(function (el) { renderAdSlot(el.id); });

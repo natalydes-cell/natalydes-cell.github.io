@@ -42,9 +42,25 @@
         <div class="article-header">
           <div class="article-eyebrow">Название раздела</div>
           <h1>Заголовок статьи</h1>
-          <p class="article-meta">Опубликовано: ДД.ММ.ГГГГ</p>
-          <!-- Теги статьи: перечисли через запятую, common.js сам отрисует их чипами -->
+          <!--
+            Теги статьи: перечисли через запятую, common.js сам отрисует их чипами
+            и сделает кликабельными (ведут на /tags/?tag=...). ВАЖНО: те же теги
+            (слово в слово) нужно добавить в объект статьи в массиве ARTICLES
+            в assets/js/common.js — иначе страница тега не найдёт эту статью.
+          -->
           <div data-tags="тег1, тег2, тег3"></div>
+        </div>
+
+        <!--
+          ИЛЛЮСТРАЦИЯ: придумай короткий ID (например, "novaya-tema-01"), впиши его
+          в src (assets/img/articles/ID.jpg) и в fb-id ниже. Отправь этот ID + размер
+          1200×800 + описание нужной картинки тому, кто генерирует иллюстрации —
+          как только файл ID.jpg появится в папке assets/img/articles/, картинка
+          подставится сама, менять код не нужно.
+        -->
+        <div class="illustration">
+          <img src="/assets/img/articles/ID.jpg" alt="Описание изображения для доступности" width="1200" height="800" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="illustration-fallback"><span class="fb-id">ID: ID · 1200×800</span><span class="fb-note">Иллюстрация появится здесь автоматически после загрузки файла</span></div>
         </div>
 
         <div id="ad-top" data-ad-slot></div>
