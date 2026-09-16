@@ -10,13 +10,13 @@
 */
 
 var SITE_CONFIG = {
-  siteName: "LUMINO",
-  tagline: "Гармония · Знания · Вдохновение",
+  siteName: "ATMAMAPA",
+  tagline: "Карта пути к себе",
   baseUrl: "https://natalydes-cell.github.io", // поменять после покупки домена
   yandexMetrikaId: null,          // вписать номер счётчика после регистрации в Яндекс.Метрике
   yandexAdBlockId: null,          // вписать ID рекламного блока после подключения РСЯ
   nav: [
-    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: false },
+    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: true  },
     { title: "Пульс планеты",        href: "/articles/puls-planety/",   icon: "ic-pulse",      ready: false },
     { title: "Нумерология",          href: "/articles/numerologiya/",   icon: "ic-numerology", ready: true  },
     { title: "Натальная карта",      href: "/articles/natalnaya-karta/",icon: "ic-natal",      ready: true  },
@@ -24,7 +24,7 @@ var SITE_CONFIG = {
     { title: "Хологенетика",         href: "/articles/hologenetika/",   icon: "ic-holo",       ready: false },
     { title: "Чакры",                href: "/articles/chakry/",         icon: "ic-chakra",     ready: false },
     { title: "Медитации",            href: "/articles/meditacii/",      icon: "ic-lotus",      ready: false },
-    { title: "Камни",                href: "/articles/kamni/",          icon: "ic-crystal",    ready: false },
+    { title: "Камни",                href: "/articles/kamni/",          icon: "ic-crystal",    ready: true  },
     { title: "Ароматерапия",         href: "/articles/aromaterapiya/",  icon: "ic-drop",       ready: false },
     { title: "Сакральная геометрия", href: "/articles/sakralnaya-geometriya/", icon: "ic-geometry", ready: false }
   ]
@@ -51,7 +51,12 @@ var ARTICLES = [
   { title: "Аспекты между планетами", href: "/articles/natalnaya-karta/aspekty-mezhdu-planetami.html", cat: "Натальная карта", excerpt: "Соединения, квадраты, трины и оппозиции — как по углам между планетами читают напряжение и гармонию в карте.", tags: ["натальная карта", "аспекты", "западная астрология"] },
   { title: "Основы джйотиша: сидерический зодиак и накшатры", href: "/articles/natalnaya-karta/osnovy-dzhyotisha-nakshatry.html", cat: "Натальная карта", excerpt: "27 лунных стоянок и почему ведическая астрология смотрит на Луну там, где западная смотрит на Солнце.", tags: ["натальная карта", "джйотиш", "накшатры", "ведическая астрология"] },
   { title: "Раши, бхавы и даши в джйотише", href: "/articles/natalnaya-karta/rashi-bhavy-dashi-dzhyotish.html", cat: "Натальная карта", excerpt: "Дома и планетные периоды — то, что задаёт хронологию жизненных событий в ведической астрологии.", tags: ["натальная карта", "джйотиш", "даши", "ведическая астрология"] },
-  { title: "Западная и ведическая астрология: в чём разница и как выбрать подход", href: "/articles/natalnaya-karta/zapadnaya-i-vedicheskaya-astrologiya-raznica.html", cat: "Натальная карта", excerpt: "Собираем всё вместе: почему знаки отличаются, что выбрать для практики и можно ли использовать обе традиции сразу.", tags: ["натальная карта", "астрология", "джйотиш", "сравнение"] }
+  { title: "Западная и ведическая астрология: в чём разница и как выбрать подход", href: "/articles/natalnaya-karta/zapadnaya-i-vedicheskaya-astrologiya-raznica.html", cat: "Натальная карта", excerpt: "Собираем всё вместе: почему знаки отличаются, что выбрать для практики и можно ли использовать обе традиции сразу.", tags: ["натальная карта", "астрология", "джйотиш", "сравнение"] },
+  { title: "Что такое литотерапия и как камни используют для здоровья и энергетики", href: "/articles/kamni/chto-takoe-litoterapiya-i-svoystva-kamney.html", cat: "Камни", excerpt: "Гемология, литотерапия, кристаллотерапия и магия камней — в чём разница между этими направлениями и что из них говорит наука.", tags: ["камни", "литотерапия", "кристаллотерапия", "гемология"] },
+  { title: "Как выбрать, очистить и зарядить камень", href: "/articles/kamni/kak-vybrat-ochistit-i-zaryadit-kamen.html", cat: "Камни", excerpt: "Практическое руководство: выбор камня по ощущению и задаче, способы очищения водой, дымом, землёй и звуком, зарядка намерением.", tags: ["камни", "литотерапия", "очищение камня", "зарядка камня"] },
+  { title: "Камни по чакрам: подбор минералов для семи энергетических центров", href: "/articles/kamni/kamni-po-chakram.html", cat: "Камни", excerpt: "От муладхары до сахасрары — какие камни традиционно соотносят с каждой чакрой и как их применяют в кристаллотерапии.", tags: ["камни", "кристаллотерапия", "чакры"] },
+  { title: "Магические свойства камней: защита, привлечение, ритуалы", href: "/articles/kamni/magicheskie-svoystva-kamney.html", cat: "Камни", excerpt: "Защитные, привлекающие и проясняющие ум камни в магической традиции — от вавилонских амулетов до современных ритуалов.", tags: ["камни", "магия камней", "амулеты", "талисманы"] },
+  { title: "Как отличить натуральный камень от подделки: основы минералогии", href: "/articles/kamni/kak-otlichit-natturalny-kamen-ot-poddelki.html", cat: "Камни", excerpt: "Гемологические признаки: твёрдость, температура, включения, цвет. Домашние тесты и когда без лаборатории не обойтись.", tags: ["камни", "гемология", "минералогия", "натуральные камни"] }
 ];
 
 var ICON_SPRITE =
@@ -356,6 +361,55 @@ function kIndexZone(value) {
   return { label: "Геомагнитная буря", cls: "storm" };
 }
 
+function schumannZone(kpValue) {
+  return kpValue < 4
+    ? { cls: "norm", label: "В пределах нормы для человека" }
+    : { cls: "high", label: "Выше нормы — возможен всплеск активности" };
+}
+
+function renderSchumannWidget() {
+  var el = document.getElementById("widget-schumann");
+  if (!el) return;
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-pulse") + "Шуманн" +
+      '<button type="button" class="info-btn" data-schumann-info aria-expanded="false" aria-label="Что такое резонанс Шумана">' + icon("ic-info") + "</button>" +
+    "</div>" +
+    '<p class="widget-info" id="schumann-info-text" hidden>Базовая частота резонанса Шумана — 7.83 Гц, её амплитуда растёт вместе с геомагнитной активностью. Риска на шкале — текущий уровень этой активности по данным NOAA.</p>' +
+    '<div class="stat-num" id="schumann-value">…</div>' +
+    '<div class="stat-sub" id="schumann-sub">Загружаем геомагнитные данные…</div>' +
+    '<div class="kindex-scale">' +
+      '<div class="kindex-track">' +
+        '<span class="kindex-zone zone-norm"></span>' +
+        '<span class="kindex-zone zone-high"></span>' +
+        '<span class="kindex-marker" id="schumann-marker"></span>' +
+      "</div>" +
+      '<div class="schumann-scale-labels"><span>норма</span><span>повышена</span></div>' +
+    "</div>";
+
+  var infoBtn = el.querySelector("[data-schumann-info]");
+  infoBtn.addEventListener("click", function () {
+    var info = document.getElementById("schumann-info-text");
+    var expanded = infoBtn.getAttribute("aria-expanded") === "true";
+    info.hidden = expanded;
+    infoBtn.setAttribute("aria-expanded", String(!expanded));
+  });
+
+  fetch("https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json")
+    .then(function (r) { return r.json(); })
+    .then(function (rows) {
+      var last = rows[rows.length - 1];
+      var value = Math.round(last.Kp * 10) / 10;
+      var zone = schumannZone(value);
+      document.getElementById("schumann-value").innerHTML = value.toFixed(1) + ' <span class="stat-unit">Kp</span>';
+      document.getElementById("schumann-sub").textContent = zone.label;
+      var marker = document.getElementById("schumann-marker");
+      marker.style.left = Math.min(100, (value / 9) * 100) + "%";
+    })
+    .catch(function () {
+      document.getElementById("schumann-sub").textContent = "Не удалось получить данные NOAA";
+    });
+}
+
 function renderKIndexWidget() {
   var el = document.getElementById("widget-kindex");
   if (!el) return;
@@ -431,18 +485,15 @@ function renderRightbar() {
   var el = document.getElementById("rightbar");
   if (!el) return;
   el.innerHTML =
-    '<div class="profile">' +
-      '<div class="avatar">Г</div>' +
-      '<div class="profile-text"><div class="profile-hi">Привет, Гость</div><a class="profile-link" href="#">Мой профиль →</a></div>' +
-      icon("ic-gear", "gear") +
-    "</div>" +
-    '<div class="widget" id="widget-moon"></div>' +
-    '<div class="widget" id="widget-kindex"></div>' +
     '<div class="widget" id="widget-today"></div>' +
+    '<div class="widget" id="widget-moon"></div>' +
+    '<div class="widget" id="widget-schumann"></div>' +
+    '<div class="widget" id="widget-kindex"></div>' +
     '<div class="widget-ad"><div class="widget-label">Реклама</div><div class="banner-ad-slot" style="text-align:left;">рекламный блок РСЯ · 300×250</div></div>';
-  renderMoonWidget();
-  renderKIndexWidget();
   renderTodayWidget();
+  renderMoonWidget();
+  renderSchumannWidget();
+  renderKIndexWidget();
 }
 
 function renderFooter() {

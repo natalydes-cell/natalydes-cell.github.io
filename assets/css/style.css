@@ -101,8 +101,10 @@ img{ max-width:100%; display:block; }
 .tile.tile-soon{ background:var(--surface); border:1px dashed var(--border); cursor:default; }
 .tile.tile-soon .icon{ color:var(--text-muted); }
 .tile.tile-soon:hover .sweep{ transform:scaleX(0); }
+.t1{ background:#DCE9DF; --deep:#BBDAC2; }
 .t3{ background:#EFE4CB; --deep:#DFC98D; }
 .t4{ background:#E3DEF0; --deep:#C7BADD; }
+.t6{ background:#F0DCE0; --deep:#DDB8C0; }
 
 /* ---------- tags ---------- */
 .tags{ display:flex; flex-wrap:wrap; gap:8px; }
@@ -234,6 +236,43 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
   .cell-readings{ grid-template-columns:1fr; }
 }
 
+/* ---------- дыхательный тренажёр ---------- */
+.breath-scheme-list{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:16px; }
+.breath-scheme-btn{
+  display:flex; flex-direction:column; align-items:flex-start; gap:2px;
+  padding:9px 14px; border:1px solid var(--border); background:var(--bg); color:var(--text);
+}
+.breath-scheme-btn .breath-scheme-name{ font-size:0.85rem; font-weight:600; }
+.breath-scheme-btn .breath-scheme-sub{ font-size:0.72rem; color:var(--text-muted); }
+.breath-scheme-btn:hover{ border-color:var(--accent); }
+.breath-scheme-btn.active{ border-color:var(--accent); background:var(--accent-soft); }
+.breath-desc{ text-align:center; font-size:0.88rem; color:var(--text-muted); max-width:520px; margin:0 auto 26px; }
+
+.breath-stage{ display:flex; flex-direction:column; align-items:center; gap:14px; }
+.breath-circle{
+  width:180px; height:180px; border-radius:50%;
+  background:radial-gradient(circle at 35% 30%, var(--accent-soft), var(--accent) 78%);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
+  transform:scale(0.55); box-shadow:0 0 0 1px var(--border);
+}
+.breath-circle.is-hold{ animation:breath-pulse 1.6s ease-in-out infinite; }
+@keyframes breath-pulse{
+  0%, 100%{ box-shadow:0 0 0 1px var(--border); }
+  50%{ box-shadow:0 0 0 8px var(--accent-soft); }
+}
+.breath-phase{ font-family:"Fraunces",serif; font-size:1.05rem; font-weight:600; color:var(--surface); }
+.breath-count{ font-family:"Fraunces",serif; font-size:1.6rem; color:var(--surface); font-variant-numeric:tabular-nums; }
+.breath-cycle-info{ font-size:0.82rem; color:var(--text-muted); min-height:1.2em; }
+
+.breath-controls{ display:flex; align-items:flex-end; justify-content:center; gap:18px; flex-wrap:wrap; margin-top:22px; }
+.breath-controls input[type="number"]{
+  font:inherit; font-size:0.95rem; padding:10px 12px; border:1px solid var(--border);
+  background:var(--bg); color:var(--text); width:5em;
+}
+.breath-sound-toggle{ display:flex; align-items:center; gap:6px; font-size:0.85rem; color:var(--text-muted); padding-bottom:11px; }
+.breath-start-btn{ background:var(--accent); color:var(--surface); padding:11px 26px; font-size:0.85rem; letter-spacing:0.03em; text-transform:uppercase; }
+.breath-start-btn:hover{ background:var(--text); }
+
 .sources{ margin-top:44px; padding-top:22px; border-top:1px solid var(--border); }
 .sources h3{ font-size:0.95rem; margin:0 0 10px; }
 .sources ol{ padding-left:20px; font-size:0.86rem; color:var(--text-muted); }
@@ -265,12 +304,19 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .moon-sign{ font-size:0.78rem; color:var(--text-muted); }
 .moon-next{ font-size:0.78rem; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
 .stat-num{ font-family:"Fraunces",serif; font-size:1.7rem; font-weight:600; line-height:1; }
+.stat-num .stat-unit{ font-size:1rem; font-weight:500; color:var(--text-muted); }
 .stat-sub{ font-size:0.8rem; color:var(--text-muted); margin:4px 0 10px; }
 
 .widget-label .info-btn{ margin-left:auto; display:flex; background:none; border:none; padding:0; cursor:pointer; color:var(--text-muted); }
 .widget-label .info-btn:hover{ color:var(--accent); }
 .widget-label .info-btn .icon{ width:15px; height:15px; }
 .widget-info{ font-size:0.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 12px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); }
+
+.kindex-zone.zone-norm{ width:44.4%; background:#9CB98A; }
+.kindex-zone.zone-high{ width:55.6%; background:var(--accent); }
+.schumann-scale-labels{ display:flex; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-top:6px; }
+.schumann-scale-labels span:first-child{ width:44.4%; }
+.schumann-scale-labels span:last-child{ width:55.6%; text-align:right; }
 
 .kindex-scale{ margin-top:6px; }
 .kindex-track{ position:relative; height:8px; border-radius:999px; overflow:hidden; display:flex; }
