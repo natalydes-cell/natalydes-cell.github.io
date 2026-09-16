@@ -104,6 +104,7 @@ img{ max-width:100%; display:block; }
 .t1{ background:#DCE9DF; --deep:#BBDAC2; }
 .t3{ background:#EFE4CB; --deep:#DFC98D; }
 .t4{ background:#E3DEF0; --deep:#C7BADD; }
+.t6{ background:#F0DCE0; --deep:#DDB8C0; }
 
 /* ---------- tags ---------- */
 .tags{ display:flex; flex-wrap:wrap; gap:8px; }

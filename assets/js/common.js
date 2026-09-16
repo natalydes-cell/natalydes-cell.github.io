@@ -24,7 +24,7 @@ var SITE_CONFIG = {
     { title: "Хологенетика",         href: "/articles/hologenetika/",   icon: "ic-holo",       ready: false },
     { title: "Чакры",                href: "/articles/chakry/",         icon: "ic-chakra",     ready: false },
     { title: "Медитации",            href: "/articles/meditacii/",      icon: "ic-lotus",      ready: false },
-    { title: "Камни",                href: "/articles/kamni/",          icon: "ic-crystal",    ready: false },
+    { title: "Камни",                href: "/articles/kamni/",          icon: "ic-crystal",    ready: true  },
     { title: "Ароматерапия",         href: "/articles/aromaterapiya/",  icon: "ic-drop",       ready: false },
     { title: "Сакральная геометрия", href: "/articles/sakralnaya-geometriya/", icon: "ic-geometry", ready: false }
   ]
@@ -51,7 +51,12 @@ var ARTICLES = [
   { title: "Аспекты между планетами", href: "/articles/natalnaya-karta/aspekty-mezhdu-planetami.html", cat: "Натальная карта", excerpt: "Соединения, квадраты, трины и оппозиции — как по углам между планетами читают напряжение и гармонию в карте.", tags: ["натальная карта", "аспекты", "западная астрология"] },
   { title: "Основы джйотиша: сидерический зодиак и накшатры", href: "/articles/natalnaya-karta/osnovy-dzhyotisha-nakshatry.html", cat: "Натальная карта", excerpt: "27 лунных стоянок и почему ведическая астрология смотрит на Луну там, где западная смотрит на Солнце.", tags: ["натальная карта", "джйотиш", "накшатры", "ведическая астрология"] },
   { title: "Раши, бхавы и даши в джйотише", href: "/articles/natalnaya-karta/rashi-bhavy-dashi-dzhyotish.html", cat: "Натальная карта", excerpt: "Дома и планетные периоды — то, что задаёт хронологию жизненных событий в ведической астрологии.", tags: ["натальная карта", "джйотиш", "даши", "ведическая астрология"] },
-  { title: "Западная и ведическая астрология: в чём разница и как выбрать подход", href: "/articles/natalnaya-karta/zapadnaya-i-vedicheskaya-astrologiya-raznica.html", cat: "Натальная карта", excerpt: "Собираем всё вместе: почему знаки отличаются, что выбрать для практики и можно ли использовать обе традиции сразу.", tags: ["натальная карта", "астрология", "джйотиш", "сравнение"] }
+  { title: "Западная и ведическая астрология: в чём разница и как выбрать подход", href: "/articles/natalnaya-karta/zapadnaya-i-vedicheskaya-astrologiya-raznica.html", cat: "Натальная карта", excerpt: "Собираем всё вместе: почему знаки отличаются, что выбрать для практики и можно ли использовать обе традиции сразу.", tags: ["натальная карта", "астрология", "джйотиш", "сравнение"] },
+  { title: "Что такое литотерапия и как камни используют для здоровья и энергетики", href: "/articles/kamni/chto-takoe-litoterapiya-i-svoystva-kamney.html", cat: "Камни", excerpt: "Гемология, литотерапия, кристаллотерапия и магия камней — в чём разница между этими направлениями и что из них говорит наука.", tags: ["камни", "литотерапия", "кристаллотерапия", "гемология"] },
+  { title: "Как выбрать, очистить и зарядить камень", href: "/articles/kamni/kak-vybrat-ochistit-i-zaryadit-kamen.html", cat: "Камни", excerpt: "Практическое руководство: выбор камня по ощущению и задаче, способы очищения водой, дымом, землёй и звуком, зарядка намерением.", tags: ["камни", "литотерапия", "очищение камня", "зарядка камня"] },
+  { title: "Камни по чакрам: подбор минералов для семи энергетических центров", href: "/articles/kamni/kamni-po-chakram.html", cat: "Камни", excerpt: "От муладхары до сахасрары — какие камни традиционно соотносят с каждой чакрой и как их применяют в кристаллотерапии.", tags: ["камни", "кристаллотерапия", "чакры"] },
+  { title: "Магические свойства камней: защита, привлечение, ритуалы", href: "/articles/kamni/magicheskie-svoystva-kamney.html", cat: "Камни", excerpt: "Защитные, привлекающие и проясняющие ум камни в магической традиции — от вавилонских амулетов до современных ритуалов.", tags: ["камни", "магия камней", "амулеты", "талисманы"] },
+  { title: "Как отличить натуральный камень от подделки: основы минералогии", href: "/articles/kamni/kak-otlichit-natturalny-kamen-ot-poddelki.html", cat: "Камни", excerpt: "Гемологические признаки: твёрдость, температура, включения, цвет. Домашние тесты и когда без лаборатории не обойтись.", tags: ["камни", "гемология", "минералогия", "натуральные камни"] }
 ];
 
 var ICON_SPRITE =
