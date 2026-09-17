@@ -312,11 +312,9 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .widget-label .info-btn .icon{ width:15px; height:15px; }
 .widget-info{ font-size:0.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 12px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); }
 
-.kindex-zone.zone-norm{ width:44.4%; background:#9CB98A; }
-.kindex-zone.zone-high{ width:55.6%; background:var(--accent); }
-.schumann-scale-labels{ display:flex; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-top:6px; }
-.schumann-scale-labels span:first-child{ width:44.4%; }
-.schumann-scale-labels span:last-child{ width:55.6%; text-align:right; }
+.schumann-figure{ margin:0; }
+.schumann-figure img{ display:block; width:100%; height:auto; border:1px solid var(--border); background:var(--bg); }
+.schumann-caption{ font-size:0.72rem; color:var(--text-muted); line-height:1.4; margin-top:8px; }
 
 .kindex-scale{ margin-top:6px; }
 .kindex-track{ position:relative; height:8px; border-radius:999px; overflow:hidden; display:flex; }
