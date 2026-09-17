@@ -15,18 +15,19 @@ var SITE_CONFIG = {
   baseUrl: "https://natalydes-cell.github.io", // поменять после покупки домена
   yandexMetrikaId: null,          // вписать номер счётчика после регистрации в Яндекс.Метрике
   yandexAdBlockId: null,          // вписать ID рекламного блока после подключения РСЯ
+  geneKeyChannelUrl: "https://t.me/hologenetictransits", // канал с разбором транзита, ссылка в виджете «Генные ключи»
   nav: [
-    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: true  },
-    { title: "Пульс планеты",        href: "/articles/puls-planety/",   icon: "ic-pulse",      ready: true  },
+    { title: "Чакры",                href: "/articles/chakry/",         icon: "ic-chakra",     ready: true  },
+    { title: "Хологенетика",         href: "/articles/hologenetika/",   icon: "ic-holo",       ready: false },
+    { title: "Human Design",         href: "/articles/human-design/",   icon: "ic-hd",         ready: false },
+    { title: "Сакральная геометрия", href: "/articles/sakralnaya-geometriya/", icon: "ic-geometry", ready: true  },
     { title: "Нумерология",          href: "/articles/numerologiya/",   icon: "ic-numerology", ready: true  },
     { title: "Натальная карта",      href: "/articles/natalnaya-karta/",icon: "ic-natal",      ready: true  },
-    { title: "Human Design",         href: "/articles/human-design/",   icon: "ic-hd",         ready: false },
-    { title: "Хологенетика",         href: "/articles/hologenetika/",   icon: "ic-holo",       ready: false },
-    { title: "Чакры",                href: "/articles/chakry/",         icon: "ic-chakra",     ready: true  },
-    { title: "Медитации",            href: "/articles/meditacii/",      icon: "ic-lotus",      ready: true  },
     { title: "Камни",                href: "/articles/kamni/",          icon: "ic-crystal",    ready: true  },
     { title: "Ароматерапия",         href: "/articles/aromaterapiya/",  icon: "ic-drop",       ready: true  },
-    { title: "Сакральная геометрия", href: "/articles/sakralnaya-geometriya/", icon: "ic-geometry", ready: true  }
+    { title: "Дыхание",              href: "/articles/dyhanie/",        icon: "ic-breath",     ready: true  },
+    { title: "Медитации",            href: "/articles/meditacii/",      icon: "ic-lotus",      ready: true  },
+    { title: "Пульс планеты",        href: "/articles/puls-planety/",   icon: "ic-pulse",      ready: true  }
   ]
 };
 
@@ -397,44 +398,101 @@ function pluralDay(n) {
   return "дней";
 }
 
+/* Приводим угол к диапазону от −180° до +180° — так удобно искать ноль. */
+function signedDegrees(deg) {
+  return ((deg + 180) % 360 + 360) % 360 - 180;
+}
+
 /*
-  Расчёт положения Луны низкой точности (~1°) по формулам Paul Schlyter /
-  Meeus — этого достаточно, чтобы верно определить знак зодиака и фазу,
-  но не претендует на точность профессиональной эфемериды.
+  Эклиптическая долгота Луны — усечённый ряд Meeus: главное уравнение центра,
+  эвекция, вариация и годичное уравнение. Точность около 0.2°, то есть примерно
+  четверть часа по времени фазы. Профессиональной эфемеридой не притворяется,
+  но лунные сутки и фазу определяет верно.
+*/
+function moonEclipticLongitude(date) {
+  var rad = Math.PI / 180;
+  var d = toJulianDate(date) - 2451545.0;
+
+  var Lm = 218.316 + 13.176396 * d;  // средняя долгота Луны
+  var M  = (134.963 + 13.064993 * d) * rad;  // средняя аномалия Луны
+  var Ms = (357.529 + 0.985600 * d) * rad;   // средняя аномалия Солнца
+  var D  = (297.850 + 12.190749 * d) * rad;  // среднее удлинение
+  var F  = (93.272 + 13.229350 * d) * rad;   // аргумент широты
+
+  return normalizeDegrees(Lm
+    + 6.289 * Math.sin(M)
+    + 1.274 * Math.sin(2 * D - M)
+    + 0.658 * Math.sin(2 * D)
+    + 0.214 * Math.sin(2 * M)
+    - 0.186 * Math.sin(Ms)
+    - 0.114 * Math.sin(2 * F)
+    - 0.059 * Math.sin(2 * D - 2 * M)
+    - 0.057 * Math.sin(2 * D - Ms - M)
+    + 0.053 * Math.sin(2 * D + M)
+    + 0.046 * Math.sin(2 * D - Ms)
+    + 0.041 * Math.sin(M - Ms)
+    - 0.035 * Math.sin(D)
+    - 0.031 * Math.sin(M + Ms));
+}
+
+/* Удлинение — угол между Луной и Солнцем. 0° — новолуние, 180° — полнолуние. */
+function moonElongation(date) {
+  return normalizeDegrees(moonEclipticLongitude(date) - sunLongitude(date));
+}
+
+var MOON_ELONGATION_RATE = 360 / SYNODIC_MONTH; // около 12.19° в сутки
+
+/* Момент, когда удлинение равно targetDeg — уточняем методом Ньютона от прикидки. */
+function solveMoonElongation(targetDeg, guessDate) {
+  var t = guessDate.getTime();
+  for (var i = 0; i < 6; i++) {
+    var diff = signedDegrees(moonElongation(new Date(t)) - targetDeg);
+    t -= (diff / MOON_ELONGATION_RATE) * 86400000;
+  }
+  return new Date(t);
+}
+
+function ordinalLunarDay(n) {
+  return n + "-е лунные сутки";
+}
+
+/*
+  Состояние Луны: фаза, освещённость, знак зодиака и лунные сутки.
+  Фаза считается не от условной точки отсчёта, а от реального угла между
+  Луной и Солнцем, поэтому не накапливает ошибку год от года.
 */
 function computeMoonState(date) {
-  var jd = toJulianDate(date);
-  var d = jd - 2451545.0;
-
-  var L = normalizeDegrees(218.316 + 13.176396 * d);
-  var M = normalizeDegrees(134.963 + 13.064993 * d);
+  var lonDeg = moonEclipticLongitude(date);
   var meanDailyMotion = 13.176396;
-  var lonDeg = normalizeDegrees(L + 6.289 * Math.sin(M * Math.PI / 180));
 
   var signIndex = Math.floor(lonDeg / 30);
   var degInSign = lonDeg - signIndex * 30;
   var daysLeftInSign = (30 - degInSign) / meanDailyMotion;
 
-  var refNewMoon = 2451550.26; // 6 января 2000, 18:14 UTC
-  var age = (jd - refNewMoon) % SYNODIC_MONTH;
-  if (age < 0) age += SYNODIC_MONTH;
+  var elongation = moonElongation(date);
 
-  var illumination = (1 - Math.cos((age / SYNODIC_MONTH) * 2 * Math.PI)) / 2;
-  var isWaxing = age < SYNODIC_MONTH / 2;
+  // Настоящий момент прошлого новолуния — от него и считаются лунные сутки.
+  var newMoon = solveMoonElongation(0, new Date(date.getTime() - (elongation / MOON_ELONGATION_RATE) * 86400000));
+  var age = (date - newMoon) / 86400000;
+  var lunarDay = Math.min(30, Math.max(1, Math.floor(age) + 1));
 
+  var illumination = (1 - Math.cos(elongation * Math.PI / 180)) / 2;
+  var isWaxing = elongation < 180;
+
+  // Названия фаз — восьмушки круга, каждая по 45°, отсчёт от точной фазы.
   var phaseName;
-  if (age < 1.84566) phaseName = "Новолуние";
-  else if (age < 5.53699) phaseName = "Растущий серп";
-  else if (age < 9.22831) phaseName = "Первая четверть";
-  else if (age < 12.91963) phaseName = "Растущая Луна";
-  else if (age < 16.61096) phaseName = "Полнолуние";
-  else if (age < 20.30228) phaseName = "Убывающая Луна";
-  else if (age < 23.99361) phaseName = "Последняя четверть";
-  else if (age < 27.68493) phaseName = "Убывающий серп";
-  else phaseName = "Новолуние";
+  if (elongation < 11.25 || elongation >= 348.75) phaseName = "Новолуние";
+  else if (elongation < 78.75) phaseName = "Растущий серп";
+  else if (elongation < 101.25) phaseName = "Первая четверть";
+  else if (elongation < 168.75) phaseName = "Растущая Луна";
+  else if (elongation < 191.25) phaseName = "Полнолуние";
+  else if (elongation < 258.75) phaseName = "Убывающая Луна";
+  else if (elongation < 281.25) phaseName = "Последняя четверть";
+  else phaseName = "Убывающий серп";
 
-  var daysToFullMoon = SYNODIC_MONTH / 2 - age;
-  if (daysToFullMoon < 0) daysToFullMoon += SYNODIC_MONTH;
+  var fullMoon = solveMoonElongation(180,
+    new Date(date.getTime() + (normalizeDegrees(180 - elongation) / MOON_ELONGATION_RATE) * 86400000));
+  var daysToFullMoon = (fullMoon - date) / 86400000;
 
   return {
     signName: ZODIAC_SIGNS[signIndex],
@@ -442,29 +500,198 @@ function computeMoonState(date) {
     phaseName: phaseName,
     illumination: illumination,
     isWaxing: isWaxing,
+    lunarDay: lunarDay,
+    newMoon: newMoon,
     daysToFullMoon: Math.round(daysToFullMoon)
   };
+}
+
+/*
+  Контур освещённой части диска. Правый полукруг — это край Луны, а обратная
+  дуга — терминатор: эллипс, у которого горизонтальная полуось меняется вместе
+  с освещённостью. Меньше половины — эллипс выгибается к светлому краю и даёт
+  серп, больше половины — в другую сторону и даёт горб. Ровно половина — прямая.
+  Убывающую Луну зеркалим: у неё освещён левый край.
+*/
+function moonLitPath(radius, illumination) {
+  var k = Math.min(1, Math.max(0, illumination));
+  var rx = (radius * Math.abs(1 - 2 * k)).toFixed(2);
+  var sweep = k > 0.5 ? 1 : 0;
+  return "M 0," + -radius + " A " + radius + "," + radius + " 0 0,1 0," + radius +
+         " A " + rx + "," + radius + " 0 0," + sweep + " 0," + -radius + " Z";
+}
+
+function moonSvg(s) {
+  var r = 46;
+  var path = moonLitPath(r, s.illumination);
+  var flip = s.isWaxing ? "" : ' transform="scale(-1,1)"';
+  return '<svg class="moon-disc" viewBox="-50 -50 100 100" role="img" aria-label="' + s.phaseName + '">' +
+    "<defs>" +
+      '<radialGradient id="moon-lit-grad" cx="38%" cy="30%" r="78%">' +
+        '<stop offset="0%" stop-color="#FFFAF0"/>' +
+        '<stop offset="70%" stop-color="#F0E3C6"/>' +
+        '<stop offset="100%" stop-color="#DCC79D"/>' +
+      "</radialGradient>" +
+      '<clipPath id="moon-lit-clip"><path d="' + path + '"/></clipPath>' +
+    "</defs>" +
+    '<circle r="' + r + '" class="moon-dark"/>' +
+    "<g" + flip + ">" +
+      '<path d="' + path + '" fill="url(#moon-lit-grad)"/>' +
+      '<g class="moon-craters" clip-path="url(#moon-lit-clip)">' +
+        '<circle cx="-14" cy="-18" r="10"/>' +
+        '<circle cx="9" cy="4" r="14"/>' +
+        '<circle cx="-4" cy="25" r="7"/>' +
+        '<circle cx="24" cy="-24" r="5"/>' +
+        '<circle cx="28" cy="18" r="8"/>' +
+      "</g>" +
+    "</g>" +
+    '<circle r="' + r + '" class="moon-rim" fill="none"/>' +
+  "</svg>";
 }
 
 function renderMoonWidget() {
   var el = document.getElementById("widget-moon");
   if (!el) return;
   var s = computeMoonState(new Date());
-  var shadowWidth = (1 - s.illumination) * 100;
-  var shadowLeft = s.isWaxing ? s.illumination * 100 : 0;
   var fullMoonText = s.daysToFullMoon === 0
-    ? "сегодня"
-    : "через " + s.daysToFullMoon + " " + pluralDay(s.daysToFullMoon);
+    ? "Полнолуние — сегодня"
+    : "Полнолуние — через " + s.daysToFullMoon + " " + pluralDay(s.daysToFullMoon);
   var signDaysText = s.daysLeftInSign === 0 ? "меньше дня" : s.daysLeftInSign + " " + pluralDay(s.daysLeftInSign);
 
   el.innerHTML =
     '<div class="widget-label">' + icon("ic-moon") + "Фаза луны</div>" +
     '<div class="moon-row">' +
-      '<div class="moon-disc"><span class="moon-shadow" style="left:' + shadowLeft + '%; width:' + shadowWidth + '%;"></span></div>' +
-      '<div><div class="moon-name">' + s.phaseName + '</div>' +
+      moonSvg(s) +
+      '<div><div class="moon-name">' + s.phaseName +
+        ' <span class="moon-illum">' + Math.round(s.illumination * 100) + "%</span></div>" +
+      '<div class="moon-day">' + ordinalLunarDay(s.lunarDay) + "</div>" +
       '<div class="moon-sign">Луна в знаке ' + s.signName + " · ещё " + signDaysText + "</div></div>" +
     "</div>" +
-    '<div class="moon-next">До полнолуния: ' + fullMoonText + "</div>";
+    '<div class="moon-next">' + fullMoonText + "</div>";
+}
+
+/* ----- транзит Солнца по Генным ключам ----- */
+
+/*
+  Колесо 64 ключей: тот же порядок ворот, что в Дизайне человека и И-Цзин.
+  Отсчёт начинается с ключа 41 на 2° Водолея (302° тропической долготы),
+  дальше ключи идут подряд по 5.625°, внутри каждого — 6 линий по 0.9375°.
+  Контрольные точки расчёта: весеннее равноденствие попадает в ключ 25,
+  13° Скорпиона — в ключ 1, 22 января — в ключ 41.
+*/
+var GENE_KEY_WHEEL = [
+  41, 19, 13, 49, 30, 55, 37, 63, 22, 36, 25, 17, 21, 51, 42, 3,
+  27, 24, 2, 23, 8, 20, 16, 35, 45, 12, 15, 52, 39, 53, 62, 56,
+  31, 33, 7, 4, 29, 59, 40, 64, 47, 6, 46, 18, 48, 57, 32, 50,
+  28, 44, 1, 43, 14, 34, 9, 5, 26, 11, 10, 58, 38, 54, 61, 60
+];
+var GENE_KEY_WHEEL_START = 302;
+var GENE_KEY_ARC = 360 / 64;
+var GENE_KEY_LINE_ARC = GENE_KEY_ARC / 6;
+
+/* Классические названия гексаграмм И-Цзин — по номеру ключа. */
+var HEXAGRAM_NAMES = [
+  "Творчество", "Исполнение", "Начальная трудность", "Недоразвитость",
+  "Ожидание", "Тяжба", "Войско", "Единение",
+  "Воспитание малым", "Поступь", "Расцвет", "Упадок",
+  "Единомышленники", "Обладание великим", "Смирение", "Вольность",
+  "Последование", "Исправление порчи", "Посещение", "Созерцание",
+  "Прокусывание", "Убранство", "Разрушение", "Возврат",
+  "Беспорочность", "Воспитание великим", "Питание", "Переразвитие великого",
+  "Бездна", "Сияние", "Взаимодействие", "Постоянство",
+  "Бегство", "Мощь великого", "Восход", "Поражение света",
+  "Домашние", "Разлад", "Препятствие", "Разрешение",
+  "Убыль", "Приумножение", "Выход", "Перерождение",
+  "Воссоединение", "Подъём", "Истощение", "Колодец",
+  "Смена", "Жертвенник", "Молния", "Сосредоточенность",
+  "Течение", "Невеста", "Изобилие", "Странствие",
+  "Проникновенность", "Радость", "Раздробление", "Ограничение",
+  "Внутренняя правда", "Переразвитие малого", "Уже конец", "Ещё не конец"
+];
+
+/*
+  Солнечная долгота, формула низкой точности (Meeus) — погрешность около 0.01°,
+  это меньше пятнадцати минут по времени, для границ ключа с запасом хватает.
+*/
+function sunLongitude(date) {
+  var n = toJulianDate(date) - 2451545.0;
+  var L = normalizeDegrees(280.460 + 0.9856474 * n);
+  var g = normalizeDegrees(357.528 + 0.9856003 * n) * Math.PI / 180;
+  return normalizeDegrees(L + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g));
+}
+
+function geneKeyAt(date) {
+  var offset = normalizeDegrees(sunLongitude(date) - GENE_KEY_WHEEL_START);
+  var index = Math.floor(offset / GENE_KEY_ARC);
+  return {
+    index: index,
+    key: GENE_KEY_WHEEL[index],
+    line: Math.floor((offset - index * GENE_KEY_ARC) / GENE_KEY_LINE_ARC) + 1
+  };
+}
+
+/* Момент выхода Солнца из текущего ключа: шагаем по суткам, затем делим отрезок пополам. */
+function geneKeyTransitEnd(date) {
+  var startIndex = geneKeyAt(date).index;
+  var lo = date.getTime();
+  var hi = lo;
+  for (var d = 1; d <= 8; d++) {
+    hi = date.getTime() + d * 86400000;
+    if (geneKeyAt(new Date(hi)).index !== startIndex) break;
+    lo = hi;
+  }
+  for (var i = 0; i < 40; i++) {
+    var mid = (lo + hi) / 2;
+    if (geneKeyAt(new Date(mid)).index === startIndex) lo = mid; else hi = mid;
+  }
+  return new Date(hi);
+}
+
+function geneKeyTransitStart(date) {
+  var startIndex = geneKeyAt(date).index;
+  var hi = date.getTime();
+  var lo = hi;
+  for (var d = 1; d <= 8; d++) {
+    lo = date.getTime() - d * 86400000;
+    if (geneKeyAt(new Date(lo)).index !== startIndex) break;
+    hi = lo;
+  }
+  for (var i = 0; i < 40; i++) {
+    var mid = (lo + hi) / 2;
+    if (geneKeyAt(new Date(mid)).index === startIndex) hi = mid; else lo = mid;
+  }
+  return new Date(hi);
+}
+
+function renderGeneKeyWidget() {
+  var el = document.getElementById("widget-genekey");
+  if (!el) return;
+  var now = new Date();
+  var gk = geneKeyAt(now);
+  var start = geneKeyTransitStart(now);
+  var end = geneKeyTransitEnd(now);
+
+  var msLeft = end - now;
+  var daysLeft = Math.ceil(msLeft / 86400000);
+  var leftText = msLeft < 86400000
+    ? "осталось меньше суток"
+    : "осталось " + daysLeft + " " + pluralDay(daysLeft);
+  var endText = end.toLocaleDateString("ru-RU", { day: "numeric", month: "long", timeZone: LUMINO_LOCATION.tz });
+  var progress = Math.min(100, Math.max(0, ((now - start) / (end - start)) * 100));
+
+  el.innerHTML =
+    '<div class="widget-label">' + icon("ic-hd") + "Генные ключи" +
+      '<button type="button" class="info-btn" data-genekey-info aria-expanded="false" aria-label="Что такое транзит Генных ключей">' + icon("ic-info") + "</button>" +
+    "</div>" +
+    '<p class="widget-info" id="genekey-info-text" hidden>Круг из 64 Генных ключей повторяет порядок гексаграмм И-Цзин и тот же круг ворот, что в Дизайне человека. Солнце проходит весь круг за год, задерживаясь в каждом ключе примерно 5–6 дней и меняя линию раз в сутки с небольшим. Положение считается по эфемериде прямо в браузере, поэтому обновляется само.</p>' +
+    '<div class="transit-key">Ключ ' + gk.key + ' <span class="transit-line">· линия ' + gk.line + "</span></div>" +
+    '<div class="transit-hex">Гексаграмма «' + HEXAGRAM_NAMES[gk.key - 1] + '»</div>' +
+    '<div class="transit-bar"><span style="width:' + progress.toFixed(1) + '%"></span></div>' +
+    '<div class="transit-left">' + leftText.charAt(0).toUpperCase() + leftText.slice(1) + " · до " + endText + "</div>" +
+    '<a class="transit-link" href="' + SITE_CONFIG.geneKeyChannelUrl + '" target="_blank" rel="noopener">' +
+      icon("ic-tg") + "Полное описание транзита</a>";
+
+  bindInfoButton(el, "[data-genekey-info]", "genekey-info-text");
 }
 
 function kIndexZone(value) {
@@ -603,6 +830,7 @@ function refreshWidgets() {
   kpRequest = null; // следующий currentKp() сходит в NOAA заново
   renderTodayWidget();
   renderMoonWidget();
+  renderGeneKeyWidget();
   updateSchumannWidget();
   updateKIndexWidget();
 }
@@ -623,11 +851,13 @@ function renderRightbar() {
   el.innerHTML =
     '<div class="widget" id="widget-today"></div>' +
     '<div class="widget" id="widget-moon"></div>' +
+    '<div class="widget" id="widget-genekey"></div>' +
     '<div class="widget" id="widget-schumann"></div>' +
     '<div class="widget" id="widget-kindex"></div>' +
     '<div class="widget-ad"><div class="widget-label">Реклама</div><div class="banner-ad-slot" style="text-align:left;">рекламный блок РСЯ · 300×250</div></div>';
   renderTodayWidget();
   renderMoonWidget();
+  renderGeneKeyWidget();
   renderSchumannWidget();
   renderKIndexWidget();
   startWidgetRefresh();
