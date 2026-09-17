@@ -101,10 +101,20 @@ img{ max-width:100%; display:block; }
 .tile.tile-soon{ background:var(--surface); border:1px dashed var(--border); cursor:default; }
 .tile.tile-soon .icon{ color:var(--text-muted); }
 .tile.tile-soon:hover .sweep{ transform:scaleX(0); }
-.t1{ background:#DCE9DF; --deep:#BBDAC2; }
-.t3{ background:#EFE4CB; --deep:#DFC98D; }
-.t4{ background:#E3DEF0; --deep:#C7BADD; }
-.t6{ background:#F0DCE0; --deep:#DDB8C0; }
+/*
+  Цвет плитки раздела на главной — по классу на каждый раздел.
+  background — сама плитка, --deep — цвет заливки, которая наезжает при наведении.
+  Чтобы перекрасить раздел, правь только эту пару значений.
+*/
+.t-chakry{    background:#F5E2D6; --deep:#E6C3AC; } /* персиковый */
+.t-geometry{  background:#E1E1F0; --deep:#C3C3E1; } /* барвинковый */
+.t-numero{    background:#EFE4CB; --deep:#DFC98D; } /* песочный */
+.t-natal{     background:#E3DEF0; --deep:#C7BADD; } /* сиреневый */
+.t-kamni{     background:#F0DCE0; --deep:#DDB8C0; } /* розовый */
+.t-aroma{     background:#E5EBDA; --deep:#C9D6B4; } /* шалфейный */
+.t-dyhanie{   background:#DCE9DF; --deep:#BBDAC2; } /* мятный */
+.t-meditacii{ background:#EAE3D7; --deep:#D4C8B3; } /* тёплый бежевый */
+.t-puls{      background:#DCE6EE; --deep:#B8CEDF; } /* небесный */
 
 /* ---------- tags ---------- */
 .tags{ display:flex; flex-wrap:wrap; gap:8px; }
@@ -298,11 +308,29 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .widget-label{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-muted); display:flex; align-items:center; gap:8px; margin-bottom:12px; }
 .widget-label .icon{ width:15px; height:15px; color:var(--accent); }
 .moon-row{ display:flex; align-items:center; gap:14px; }
-.moon-disc{ width:40px; height:40px; border-radius:50%; background:#DED6C2; position:relative; overflow:hidden; flex-shrink:0; }
-.moon-shadow{ content:""; position:absolute; top:0; bottom:0; background:var(--text); opacity:0.78; }
+.moon-disc{ width:58px; height:58px; flex-shrink:0; display:block; filter:drop-shadow(0 2px 5px rgba(46,42,34,.18)); }
+.moon-dark{ fill:#2A2419; }
+.moon-rim{ fill:none; stroke:rgba(46,42,34,.22); stroke-width:1.5; }
+.moon-craters circle{ fill:#CDBA92; opacity:.45; }
 .moon-name{ font-size:0.88rem; font-weight:600; }
-.moon-sign{ font-size:0.78rem; color:var(--text-muted); }
+.moon-illum{ font-size:0.76rem; font-weight:500; color:var(--text-muted); }
+.moon-day{ font-size:0.78rem; color:var(--accent); margin-top:2px; }
+.moon-sign{ font-size:0.78rem; color:var(--text-muted); margin-top:2px; }
 .moon-next{ font-size:0.78rem; color:var(--text-muted); margin-top:10px; padding-top:10px; border-top:1px solid var(--border); }
+
+.transit-key{ font-family:"Fraunces",serif; font-size:1.25rem; font-weight:600; line-height:1.1; }
+.transit-line{ font-size:0.85rem; font-weight:500; color:var(--text-muted); }
+.transit-hex{ font-size:0.8rem; color:var(--text-muted); margin-top:3px; }
+.transit-bar{ height:6px; background:var(--accent-soft); border-radius:999px; overflow:hidden; margin-top:12px; }
+.transit-bar span{ display:block; height:100%; background:var(--accent); transition:width .4s; }
+.transit-left{ font-size:0.78rem; color:var(--text-muted); margin-top:8px; }
+.transit-link{
+  display:inline-flex; align-items:center; gap:6px; margin-top:12px;
+  font-family:"Work Sans", system-ui, sans-serif; font-size:0.78rem; color:var(--accent);
+  border-bottom:1px solid transparent;
+}
+.transit-link .icon{ width:14px; height:14px; flex-shrink:0; }
+.transit-link:hover{ border-bottom-color:var(--accent); }
 .stat-num{ font-family:"Fraunces",serif; font-size:1.7rem; font-weight:600; line-height:1; }
 .stat-num .stat-unit{ font-size:1rem; font-weight:500; color:var(--text-muted); }
 .stat-sub{ font-size:0.8rem; color:var(--text-muted); margin:4px 0 10px; }
@@ -312,11 +340,9 @@ a.tag:hover{ border-color:var(--accent); color:var(--accent); }
 .widget-label .info-btn .icon{ width:15px; height:15px; }
 .widget-info{ font-size:0.78rem; color:var(--text-muted); line-height:1.5; margin:0 0 12px; padding:10px 12px; background:var(--bg); border:1px solid var(--border); }
 
-.kindex-zone.zone-norm{ width:44.4%; background:#9CB98A; }
-.kindex-zone.zone-high{ width:55.6%; background:var(--accent); }
-.schumann-scale-labels{ display:flex; font-size:0.66rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--text-muted); margin-top:6px; }
-.schumann-scale-labels span:first-child{ width:44.4%; }
-.schumann-scale-labels span:last-child{ width:55.6%; text-align:right; }
+.schumann-figure{ margin:0; }
+.schumann-figure img{ display:block; width:100%; height:auto; border:1px solid var(--border); background:var(--bg); }
+.schumann-caption{ font-size:0.72rem; color:var(--text-muted); line-height:1.4; margin-top:8px; }
 
 .kindex-scale{ margin-top:6px; }
 .kindex-track{ position:relative; height:8px; border-radius:999px; overflow:hidden; display:flex; }

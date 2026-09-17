@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Геомагнитные бури и K-индекс: как понимать цифры — ATMAMAPA</title>
+  <meta name="description" content="Что означают K и Kp, как устроена шкала G1–G5 и какие бури действительно имеют последствия.">
+  <link rel="canonical" href="https://natalydes-cell.github.io/articles/puls-planety/geomagnitnye-buri-i-k-indeks.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Literata:ital,wght@0,400;0,500;0,600;1,400&family=Work+Sans:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/css/style.css">
+</head>
+<body>
+  <script>
+    window.PAGE_CRUMBS = [
+      { title: "Главная", href: "/" },
+      { title: "Пульс планеты", href: "/articles/puls-planety/" },
+      { title: "Геомагнитные бури и K-индекс", href: "#" }
+    ];
+  </script>
+
+  <div class="overlay" id="overlay"></div>
+  <div class="app">
+    <aside class="sidebar" id="sidebar"></aside>
+
+    <main class="main is-article">
+      <div class="topbar" id="topbar"></div>
+      <div class="crumbs" id="crumbs"></div>
+
+      <article class="article">
+        <div class="article-header">
+          <div class="article-eyebrow">Пульс планеты · 3 из 10</div>
+          <h1>Геомагнитные бури и K-индекс</h1>
+          <div data-tags="пульс планеты, магнитные бури, K-индекс, Kp"></div>
+          <div class="article-actions" data-article-actions></div>
+        </div>
+
+        <div class="illustration">
+          <img src="/assets/img/articles/puls-03.jpg" alt="Шкала из девяти делений и стрелка" width="1200" height="800" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="illustration-fallback"><span class="fb-id">ID: puls-03 · 1200×800</span><span class="fb-note">Иллюстрация появится здесь автоматически после загрузки файла</span></div>
+        </div>
+
+        <div id="ad-top" data-ad-slot></div>
+
+        <div class="article-body">
+          <p>«Сегодня K-индекс 5» — фраза, которая регулярно встречается в новостях и в виджете на этом сайте. Разберёмся, что стоит за цифрой и какие значения действительно что-то означают.</p>
+
+          <h2>Что такое K-индекс</h2>
+          <p>K-индекс показывает, насколько сильно магнитное поле Земли отклонилось от спокойного уровня за трёхчасовой интервал. Его ввёл немецкий геофизик Юлиус Бартельс в 1938 году.</p>
+          <ul>
+            <li>Шкала от <strong>0 до 9</strong>, квазилогарифмическая: каждая следующая ступень соответствует значительно большему возмущению.</li>
+            <li>Измеряется по данным магнитометров конкретной обсерватории — то есть <strong>K локален</strong>. Для каждой станции «спокойный уровень» свой, и шкала калибруется отдельно.</li>
+            <li>Восемь значений за сутки — по одному на каждый трёхчасовой интервал.</li>
+          </ul>
+          <p><strong>Kp</strong> (p — planetary) — планетарный индекс, усреднённый по сети из 13 геомагнитных обсерваторий в средних широтах. Именно его используют в прогнозах и именно он стоит за шкалами бурь. Kp публикуется с дробными значениями: 4−, 4o, 4+ и так далее.</p>
+
+          <h2>Шкала бурь NOAA</h2>
+          <p>Значения Kp переводятся в пятибалльную шкалу G:</p>
+          <ul>
+            <li><strong>Kp 0–4</strong> — спокойная или слегка возмущённая обстановка, бури нет.</li>
+            <li><strong>G1, Kp = 5</strong> — слабая буря. Несколько раз в месяц в активные годы. Сияния в приполярных широтах, лёгкие колебания в энергосетях.</li>
+            <li><strong>G2, Kp = 6</strong> — умеренная. Сияния видны южнее, возможны проблемы у спутников на высоких широтах.</li>
+            <li><strong>G3, Kp = 7</strong> — сильная. Нужна коррекция ориентации спутников, сбои GPS, сияния в средних широтах.</li>
+            <li><strong>G4, Kp = 8</strong> — очень сильная. Проблемы с управлением энергосетями, длительные сбои навигации.</li>
+            <li><strong>G5, Kp = 9</strong> — экстремальная. Несколько раз за солнечный цикл. Риск повреждения трансформаторов, сияния на широте юга Европы.</li>
+          </ul>
+
+          <div class="article-example">
+            <p>Как читать это по-человечески. Kp = 4 — обычный день, никакого события. Kp = 5 — повод проверить прогноз сияний, если вы живёте достаточно северно, и не более того. Kp = 7 и выше — действительно редкое явление, о котором пишут новости и после которого энергетики пишут отчёты. Заголовки о «сильнейшей магнитной буре» при Kp = 5 — обычная журналистская инфляция.</p>
+          </div>
+
+          <h2>Другие индексы</h2>
+          <ul>
+            <li><strong>Dst</strong> (Disturbance storm time) — измеряет ослабление поля на экваторе из-за кольцевого тока, в нанотеслах. В отличие от Kp, это непрерывная величина. Спокойное состояние — около −20 нТл, сильная буря — ниже −100 нТл, экстремальная — ниже −250 нТл. Для физики бури Dst информативнее Kp.</li>
+            <li><strong>Ap</strong> — суточный линейный эквивалент Kp, удобен для статистики по годам.</li>
+            <li><strong>AE</strong> — индекс авроральной электроструи, показывает активность именно в зоне сияний.</li>
+            <li><strong>F10.7</strong> — поток радиоизлучения Солнца на длине волны 10,7 см. Не буря, а мера общей солнечной активности; используется как замена подсчёту пятен.</li>
+          </ul>
+
+          <h2>Как развивается буря</h2>
+          <ol>
+            <li><strong>Внезапное начало (SSC).</strong> Ударная волна выброса сжимает магнитосферу, поле на поверхности кратковременно усиливается. Длится минуты.</li>
+            <li><strong>Главная фаза.</strong> Энергия закачивается в магнитосферу, растёт кольцевой ток, Dst падает. Несколько часов.</li>
+            <li><strong>Фаза восстановления.</strong> Система возвращается к норме за время от нескольких часов до нескольких суток.</li>
+          </ol>
+          <p>Отсюда, кстати, понятно, почему разговоры вида «буря будет весь день» неточны: активность меняется в течение суток, и трёхчасовые интервалы K как раз для этого и нужны.</p>
+
+          <h2>Где смотреть</h2>
+          <ul>
+            <li><strong>NOAA SWPC</strong> — прогнозы Kp на три дня, оперативные предупреждения.</li>
+            <li><strong>ИЗМИРАН</strong> — российские данные и прогнозы.</li>
+            <li><strong>Виджет в правой колонке этого сайта</strong> показывает текущее значение K-индекса — теперь вы знаете, откуда берётся эта цифра и что она значит.</li>
+          </ul>
+          <p>О том, стоит ли соотносить эти цифры со своим самочувствием, — в <a href="/articles/puls-planety/meteochuvstvitelnost-i-magnitnye-buri.html">следующей статье</a>: тема требует отдельного и очень аккуратного разговора.</p>
+
+          <div class="disclaimer">Геомагнитные индексы — инструмент геофизики и прикладных служб. Прямое использование их как показателя «опасности для здоровья» не обосновано.</div>
+        </div>
+
+        <div class="sources">
+          <h3>Источники</h3>
+          <ol>
+            <li>Bartels J. и последующие работы по K-индексу.</li>
+            <li>NOAA Space Weather Scales (G1–G5).</li>
+            <li>GFZ Potsdam — официальный расчёт индекса Kp.</li>
+            <li>World Data Center for Geomagnetism, Kyoto — индекс Dst.</li>
+            <li>ИЗМИРАН.</li>
+          </ol>
+        </div>
+
+        <div class="series-nav">
+          <a href="/articles/puls-planety/solnechnye-vspyshki-i-vybrosy.html"><span class="dir">← Назад</span><span class="lbl">Солнечные вспышки и корональные выбросы массы</span></a>
+          <a class="next" href="/articles/puls-planety/meteochuvstvitelnost-i-magnitnye-buri.html"><span class="dir">Далее в серии</span><span class="lbl">Магнитные бури и самочувствие: честный разбор →</span></a>
+        </div>
+
+        <div id="ad-bottom" data-ad-slot></div>
+      </article>
+    </main>
+
+    <aside class="rightbar" id="rightbar"></aside>
+    <footer class="footer" id="footer"></footer>
+  </div>
+
+  <script src="/assets/js/common.js"></script>
+</body>
+</html>
